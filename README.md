@@ -3,8 +3,8 @@ A Vault compatible abstraction library for Bukkit plugins
 
 ## Features
 - UUID compatible
-- Run multiple service provider (economy/permission/etc.) and set plugins
-  to use a specific service provider
+- Run multiple service provider (economy/permission/etc.) and map specific
+  service provider to be used by certain plugins
 - Fallback to other service providers
 - (Maybe: BungeeCord support)
 
@@ -14,6 +14,7 @@ A Vault compatible abstraction library for Bukkit plugins
 - Chat
 - UUID/Username storage and lookup
 - Local Namechange storage and lookup
+- Item data storage
 
 ## License
 Tresor is licensed under [LGPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
