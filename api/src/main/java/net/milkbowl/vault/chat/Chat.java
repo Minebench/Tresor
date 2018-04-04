@@ -936,12 +936,12 @@ public abstract class Chat {
      * @param player Player name
      * @param group  Group name
      * @return Success or Failure
-     * @deprecated Since Tresor 1.0; use {{@link Permission#playerInGroup(World, String, String)} instead.
+     * @deprecated Since Tresor 1.0; use {{@link Permission#playerInGroup(String, String, String)} instead.
      * Check if player is member of a group.
      */
     @Deprecated
     public boolean playerInGroup(World world, String player, String group) {
-        return perms.playerInGroup(world, player, group);
+        return perms.playerInGroup(world.getName(), player, group);
     }
     
     /**
@@ -984,12 +984,12 @@ public abstract class Chat {
      * @param world  World Object
      * @param player Player name
      * @return Array of groups
-     * @deprecated Since Tresor 1.0; use {{@link Permission#getPlayerGroups(World, String)} instead.
+     * @deprecated Since Tresor 1.0; use {{@link Permission#getPlayerGroups(String, String)} instead.
      * Gets the list of groups that this player has
      */
     @Deprecated
     public String[] getPlayerGroups(World world, String player) {
-        return perms.getPlayerGroups(world, player);
+        return perms.getPlayerGroups(world.getName(), player);
     }
     
     /**
@@ -1031,12 +1031,12 @@ public abstract class Chat {
      * @param world  World Object
      * @param player Player name
      * @return Players primary group
-     * @deprecated Since Tresor 1.0; use {{@link Permission#getPrimaryGroup(World, String)} instead.
+     * @deprecated Since Tresor 1.0; use {{@link Permission#getPrimaryGroup(String, String)} instead.
      * Gets players primary group
      */
     @Deprecated
     public String getPrimaryGroup(World world, String player) {
-        return perms.getPrimaryGroup(world, player);
+        return perms.getPrimaryGroup(world.getName(), player);
     }
     
     /**
