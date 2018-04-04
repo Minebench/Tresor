@@ -8,6 +8,9 @@
     <artifactId>tresor-parent</artifactId>
     <version>parent</version>
 
+    <url>https://github.com/Minebench/Tresor</url>
+    <description>A Vault compatible abstraction library for Bukkit plugins</description>
+
     <modules>
         <module>api</module>
         <module>plugin</module>

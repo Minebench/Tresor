@@ -1,0 +1,8 @@
+services:
+  economy:
+    PluginName: EconomyPlugin
+    AnotherPluginName: AnotherEconomyPlugin
+  chat:
+    ChatPluginName: PermissionPlugin
+  permission:
+    AnotherPluginName: PermissionPlugin

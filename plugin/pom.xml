@@ -29,6 +29,7 @@
             <groupId>de.minebench.tresor</groupId>
             <artifactId>tresor-api</artifactId>
             <version>${api.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
@@ -41,6 +42,12 @@
             <artifactId>bstats-bukkit-lite</artifactId>
             <version>1.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -61,11 +68,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>de.themoep.utils.bstats</shadedPattern>
+                            <shadedPattern>de.minebench.tresor.utils.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.mcstats</pattern>
-                            <shadedPattern>de.themoep.utils.mcstats</shadedPattern>
+                            <shadedPattern>de.minebench.tresor.utils.mcstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

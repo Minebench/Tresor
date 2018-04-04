@@ -1,0 +1,18 @@
+name: ${plugin.name}
+version: '${plugin.version} ${build.number}'
+main: de.minebench.tresor.Tresor
+load: STARTUP
+authors: [Phoenix616]
+website: '${project.url}'
+description: '${project.description}'
+commands:
+  tresor:
+    description: Displays information about Tresor
+    usage: |
+           /<command> reload - Reload config
+           /<command> info - Displays Tresor information
+           /<command> convert <service> <plugin1> <plugin2> - Converts all data in plugin1 and dumps it into plugin2
+permissions:
+  tresor.updatenotify:
+    description: Notifies the player when Tresor is in need of an update.
+    default: op
