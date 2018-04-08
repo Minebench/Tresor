@@ -1,20 +1,23 @@
 # Tresor
-A Vault compatible abstraction library for Bukkit plugins
+A Vault compatible abstraction library for Bukkit plugins.
+
+Currently a work in progress. Take a look at the lists below at which features are
+implemented and should already work.
 
 ## Features
-- UUID compatible
-- Run multiple service provider (economy/permission/etc.) and map specific
-  service provider to be used by certain plugins
-- Fallback to other service providers
-- (Maybe: BungeeCord support)
+- [x] UUID compatible
+- [x] Run multiple service provider (economy/permission/etc.)
+      and set different providers for different plugins
+- [x] Fallback to other service providers
+- [ ] (Maybe: BungeeCord support)
 
 ## Included Abstractions
-- Economy
-- Permissions
-- Chat
-- UUID/Username storage and lookup
-- Local Namechange storage and lookup
-- Item data storage
+- [x] Economy
+- [x] Permissions
+- [x] Chat
+- [ ] UUID/Username storage and lookup
+- [ ] Local Namechange storage and lookup
+- [ ] Item data storage
 
 ## License
 Tresor is licensed under [LGPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
