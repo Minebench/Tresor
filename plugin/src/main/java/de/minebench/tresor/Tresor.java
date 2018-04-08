@@ -8,16 +8,16 @@ import java.util.logging.Level;
 
 public class Tresor extends JavaPlugin {
     
-    private TresorServicesManager servicesManager;
+    private WrappedServicesManager servicesManager;
     
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        servicesManager = new TresorServicesManager(this, getServer().getServicesManager());
+        servicesManager = new WrappedServicesManager(this, getServer().getServicesManager());
         try {
             injectServicesManager();
         } catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            getLogger().log(Level.SEVERE, "Error while trying to inject TresorServicesManager! Service mapping will not work!" + e.getMessage());
+            getLogger().log(Level.SEVERE, "Error while trying to inject WrappedServicesManager! Service mapping will not work!" + e.getMessage());
         }
     
         try {

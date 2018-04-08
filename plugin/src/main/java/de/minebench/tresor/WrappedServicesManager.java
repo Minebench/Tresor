@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
-public class TresorServicesManager implements ServicesManager {
+public class WrappedServicesManager implements TresorServicesManager {
     private final Tresor tresor;
     private interface Excludes {
         <T> RegisteredServiceProvider<T> getRegistration(Class<T> service);
@@ -15,7 +15,7 @@ public class TresorServicesManager implements ServicesManager {
     @Delegate(excludes = Excludes.class, types = {ServicesManager.class})
     private final ServicesManager parent;
     
-    public TresorServicesManager(Tresor plugin, ServicesManager parent) {
+    public WrappedServicesManager(Tresor plugin, ServicesManager parent) {
         tresor = plugin;
         this.parent = parent;
     }
@@ -25,7 +25,7 @@ public class TresorServicesManager implements ServicesManager {
         StackTraceElement[] stackTrace = new Exception().getStackTrace();
         for (int i = 1; i < stackTrace.length; i++) {
             StackTraceElement element = stackTrace[i];
-            if (!element.getClassName().equals(TresorServicesManager.class.getName())
+            if (!element.getClassName().equals(WrappedServicesManager.class.getName())
                     && !element.getClassName().startsWith("org.bukkit.")
                     && !element.getClassName().startsWith("org.spigotmc.")
                     && !element.getClassName().startsWith("java.")) {
@@ -41,6 +41,7 @@ public class TresorServicesManager implements ServicesManager {
         return parent.getRegistration(service);
     }
     
+    @Override
     public <T> RegisteredServiceProvider<T> getRegistration(JavaPlugin plugin, Class<T> service) {
         String serviceName = tresor.getConfig().getString("services." + service.getSimpleName().toLowerCase() + "." + plugin.getName(),
                 tresor.getConfig().getString("services." + service.getSimpleName().toLowerCase() + ".default", null));
