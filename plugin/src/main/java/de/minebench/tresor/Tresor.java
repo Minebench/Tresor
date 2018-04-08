@@ -19,14 +19,16 @@ public class Tresor extends JavaPlugin {
         } catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
             getLogger().log(Level.SEVERE, "Error while trying to inject WrappedServicesManager! Service mapping will not work!" + e.getMessage());
         }
-    
+        
+        loadProviders();
+        
         try {
             org.mcstats.MetricsLite metrics = new org.mcstats.MetricsLite(this);
             metrics.start();
         } catch(IOException e) {
             // metrics failed to load
         }
-    
+        
         new org.bstats.MetricsLite(this);
     }
     
@@ -36,7 +38,26 @@ public class Tresor extends JavaPlugin {
         field.set(getServer(), servicesManager);
     }
     
+    private void loadProviders() {
+    
+    }
+    
+    /**
+     * Get the TresorServicesManager
+     * @return The TresorServicesManager instance
+     */
     public TresorServicesManager getServicesManager() {
         return servicesManager;
+    }
+    
+    /**
+     * Get the name of the service provider for a plugin
+     * @param service   The service to get the provider name for
+     * @param plugin    The plugin to get the name for
+     * @return The service name or null if there was none configured
+     */
+    public String getProviderName(Class<?> service, JavaPlugin plugin) {
+        return getConfig().getString("providers." + service.getSimpleName().toLowerCase() + "." + plugin.getName(),
+                getConfig().getString("providers." + service.getSimpleName().toLowerCase() + ".default", null));
     }
 }

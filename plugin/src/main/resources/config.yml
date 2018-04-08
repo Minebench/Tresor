@@ -1,4 +1,4 @@
-services:
+providers:
   economy:
     PluginName: EconomyPlugin
     AnotherPluginName: AnotherEconomyPlugin
