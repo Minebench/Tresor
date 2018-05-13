@@ -18,6 +18,8 @@ implemented and should already work.
 - [ ] UUID/Username storage and lookup
 - [ ] Local Namechange storage and lookup
 - [ ] Item data storage
+- [ ] Friends 
+- [ ] Parties/clans/guilds
 
 ## License
 Tresor is licensed under [LGPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
