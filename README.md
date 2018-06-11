@@ -20,6 +20,7 @@ implemented and should already work.
 - [ ] Item data storage
 - [ ] Friends 
 - [ ] Parties/clans/guilds
+- [ ] Placeholders
 
 ## License
 Tresor is licensed under [LGPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
