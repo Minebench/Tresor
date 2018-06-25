@@ -21,6 +21,8 @@ implemented and should already work.
 - [ ] Friends 
 - [ ] Parties/clans/guilds
 - [ ] Placeholders
+- [ ] Region protection/claim management
+- [ ] Single block access management
 
 ## License
 Tresor is licensed under [LGPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
