@@ -13,6 +13,7 @@ implemented and should already work.
 
 ## Included Abstractions
 - [x] Economy
+- [ ] BigDecimal Economy
 - [x] Permissions
 - [x] Chat
 - [ ] UUID/Username storage and lookup
