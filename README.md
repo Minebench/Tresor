@@ -9,14 +9,16 @@ implemented and should already work.
 - [x] Run multiple service provider (economy/permission/etc.)
       and set different providers for different plugins
 - [x] Fallback to other service providers
+- [ ] Check returns of multiple providers
 - [ ] (Maybe: BungeeCord support)
 
 ## Included Abstractions
 - [x] Economy
 - [ ] BigDecimal Economy
+- [ ] Async Economy
 - [x] Permissions
 - [x] Chat
-- [ ] UUID/Username storage and lookup
+- [ ] UUID/Username/Profile storage and lookup
 - [ ] Local Namechange storage and lookup
 - [ ] Item data storage
 - [ ] Friends 
@@ -24,6 +26,7 @@ implemented and should already work.
 - [ ] Placeholders
 - [ ] Region protection/claim management
 - [ ] Single block access management
+- [ ] Player statuses (AFK, DND, Vanished, etc)
 
 ## License
 Tresor is licensed under [LGPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
