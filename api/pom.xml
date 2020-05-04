@@ -13,4 +13,13 @@
         <version>parent</version>
     </parent>
 
+    <licenses>
+        <license>
+            <name>LGPL-3.0-or-later</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A free, copyleft license for software and other kinds of works.</comments>
+        </license>
+    </licenses>
+
 </project>

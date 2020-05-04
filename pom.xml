@@ -16,6 +16,21 @@
         <module>plugin</module>
     </modules>
 
+    <licenses>
+        <license>
+            <name>GPL-3.0-or-later</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A free, copyleft license for software and other kinds of works.</comments>
+        </license>
+        <license>
+            <name>LGPL-3.0-or-later</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A free, copyleft license for software and other kinds of works.</comments>
+        </license>
+    </licenses>
+
     <properties>
         <plugin.name>Tresor</plugin.name>
         <api.version>1.0-SNAPSHOT</api.version>
