@@ -1,7 +1,9 @@
 name: ${plugin.name}
 version: '${plugin.version} ${build.number}'
+api-version: '1.13'
 main: de.minebench.tresor.Tresor
 load: STARTUP
+provides: [Vault]
 authors: [Phoenix616]
 website: '${project.url}'
 description: '${project.description}'

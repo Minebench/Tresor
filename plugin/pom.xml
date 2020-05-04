@@ -24,10 +24,6 @@
 
     <repositories>
         <repository>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
-        </repository>
-        <repository>
             <id>bstats-repo</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
         </repository>
@@ -38,12 +34,6 @@
             <groupId>de.minebench.tresor</groupId>
             <artifactId>tresor-api</artifactId>
             <version>${api.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics-lite</artifactId>
-            <version>R8-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -78,10 +68,6 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>de.minebench.tresor.utils.bstats</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.mcstats</pattern>
-                            <shadedPattern>de.minebench.tresor.utils.mcstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
