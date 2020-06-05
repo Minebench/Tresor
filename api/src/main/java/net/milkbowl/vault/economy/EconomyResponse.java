@@ -15,12 +15,17 @@
  */
 package net.milkbowl.vault.economy;
 
+import java.math.BigDecimal;
+
 /**
+ * Vault's legacy economy response
  * Indicates a typical Return for an Economy method.  
  * It includes a {@link ResponseType} indicating whether the plugin currently being used for Economy actually allows
  * the method, or if the operation was a success or failure.
  *
+ * @deprecated Use the {@link de.minebench.tresor.economy.EconomyResponse}
  */
+@Deprecated
 public class EconomyResponse {
 
     /**
@@ -39,6 +44,10 @@ public class EconomyResponse {
 
         int getId() {
             return id;
+        }
+
+        public de.minebench.tresor.economy.EconomyResponse.ResponseType toTresor() {
+            return de.minebench.tresor.economy.EconomyResponse.ResponseType.valueOf(name());
         }
     }
 
@@ -85,5 +94,18 @@ public class EconomyResponse {
         default:
             return false;
         }
+    }
+
+    /**
+     * Convert to Tresor EconomyResponse
+     * @return The Tresor {@link de.minebench.tresor.economy.EconomyResponse} used by {@link de.minebench.tresor.economy.TresorEconomy}
+     */
+    public de.minebench.tresor.economy.EconomyResponse toTresor() {
+        return new de.minebench.tresor.economy.EconomyResponse(
+                BigDecimal.valueOf(amount),
+                BigDecimal.valueOf(balance),
+                type.toTresor(),
+                errorMessage
+        );
     }
 }

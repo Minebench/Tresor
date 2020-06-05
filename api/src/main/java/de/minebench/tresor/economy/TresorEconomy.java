@@ -1,56 +1,57 @@
-/* This file is part of Vault.
+package de.minebench.tresor.economy;
 
-    Vault is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Vault is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with Vault.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-package net.milkbowl.vault.economy;
-
-import java.util.List;
-import java.util.UUID;
-
-import de.minebench.tresor.economy.TresorEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-/**
- * Vault's legacy economy API
- * @deprecated Use the {@link TresorEconomy} to avoid rounding errors
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+/*
+ * Tresor - Abstraction library for Bukkit plugins
+ * Copyright (C) 2020 Max Lee aka Phoenix616 (mail@moep.tv)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Tresor.  If not, see <http://www.gnu.org/licenses/>.
  */
-@Deprecated
-public interface Economy {
-    
+
+/**
+ * The main economy API using industry standard BigDecimal for values
+ */
+public interface TresorEconomy {
+
     /**
      * Checks if economy method is enabled.
      *
      * @return Success or Failure
      */
     boolean isEnabled();
-    
+
     /**
      * Gets name of economy method
      *
      * @return Name of Economy Method
      */
     String getName();
-    
+
     /**
-     * Returns true if the given implementation supports banks.
+     * Returns true if the given implementation supports a given feature.
      *
-     * @return true if the implementation supports banks
+     * @param feature The feature to check for
+     * @return true if the implementation supports the feature
      */
-    boolean hasBankSupport();
-    
+    boolean supports(Feature feature);
+
     /**
      * Some economy plugins round off after a certain number of digits.
      * This function returns the number of digits the plugin keeps
@@ -59,7 +60,7 @@ public interface Economy {
      * @return number of digits after the decimal point kept
      */
     int fractionalDigits();
-    
+
     /**
      * Format amount into a human readable String This provides translation into
      * economy specific formatting to improve consistency between plugins.
@@ -67,8 +68,8 @@ public interface Economy {
      * @param amount to format
      * @return Human readable string describing amount
      */
-    String format(double amount);
-    
+    String format(BigDecimal amount);
+
     /**
      * Returns the name of the currency in plural form.
      * If the economy being used does not support currency names then an empty string will be returned.
@@ -76,8 +77,8 @@ public interface Economy {
      * @return name of the currency (plural)
      */
     String currencyNamePlural();
-    
-    
+
+
     /**
      * Returns the name of the currency in singular form.
      * If the economy being used does not support currency names then an empty string will be returned.
@@ -85,7 +86,7 @@ public interface Economy {
      * @return name of the currency (singular)
      */
     String currencyNameSingular();
-    
+
     /**
      * Checks if this player has an account on the server yet
      * This will always return true if the player has joined the server at least once
@@ -95,7 +96,7 @@ public interface Economy {
      * @return if the player has an account
      */
     boolean hasAccount(String playerName);
-    
+
     /**
      * Checks if this player has an account on the server yet
      * This will always return true if the player has joined the server at least once
@@ -104,10 +105,8 @@ public interface Economy {
      * @param playerId  to check
      * @return if the player has an account
      */
-    default boolean hasAccount(UUID playerId) {
-        return hasAccount(Bukkit.getOfflinePlayer(playerId));
-    }
-    
+    boolean hasAccount(UUID playerId);
+
     /**
      * Checks if this player has an account on the server yet
      * This will always return true if the player has joined the server at least once
@@ -117,9 +116,9 @@ public interface Economy {
      * @return if the player has an account
      */
     default boolean hasAccount(OfflinePlayer player) {
-        return hasAccount(player.getName());
+        return hasAccount(player.getUniqueId());
     }
-    
+
     /**
      * Checks if this player has an account on the server yet on the given world
      * This will always return true if the player has joined the server at least once
@@ -130,7 +129,7 @@ public interface Economy {
      * @return if the player has an account
      */
     boolean hasAccount(String playerName, String worldName);
-    
+
     /**
      * Checks if this player has an account on the server yet on the given world
      * This will always return true if the player has joined the server at least once
@@ -140,10 +139,8 @@ public interface Economy {
      * @param worldName world-specific account
      * @return if the player has an account
      */
-    default boolean hasAccount(UUID playerId, String worldName) {
-        return hasAccount(Bukkit.getOfflinePlayer(playerId), worldName);
-    }
-    
+    boolean hasAccount(UUID playerId, String worldName);
+
     /**
      * Checks if this player has an account on the server yet on the given world
      * This will always return true if the player has joined the server at least once
@@ -153,36 +150,36 @@ public interface Economy {
      * @param worldName world-specific account
      * @return if the player has an account
      */
-    boolean hasAccount(OfflinePlayer player, String worldName);
-    
+    default boolean hasAccount(OfflinePlayer player, String worldName) {
+        return hasAccount(player.getUniqueId(), worldName);
+    }
+
     /**
      * Gets balance of a player
      *
      * @param playerId  of the player
      * @return Amount currently held in players account
      */
-    default double getBalance(UUID playerId) {
-        return getBalance(Bukkit.getOfflinePlayer(playerId));
-    }
-    
+    BigDecimal getBalance(UUID playerId);
+
     /**
      * Gets balance of a player
      *
      * @param playerName    of the player
      * @return Amount currently held in players account
      */
-    double getBalance(String playerName);
-    
+    BigDecimal getBalance(String playerName);
+
     /**
      * Gets balance of a player
      *
      * @param player    to check
      * @return Amount currently held in players account
      */
-    default double getBalance(OfflinePlayer player) {
-        return getBalance(player.getName());
+    default BigDecimal getBalance(OfflinePlayer player) {
+        return getBalance(player.getUniqueId());
     }
-    
+
     /**
      * Gets balance of a player on the specified world.
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -191,8 +188,8 @@ public interface Economy {
      * @param world  name of the world
      * @return Amount currently held in players account
      */
-    double getBalance(String playerName, String world);
-    
+    BigDecimal getBalance(String playerName, String world);
+
     /**
      * Gets balance of a player on the specified world.
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -201,10 +198,8 @@ public interface Economy {
      * @param world  name of the world
      * @return Amount currently held in players account
      */
-    default double getBalance(UUID playerId, String world) {
-        return getBalance(Bukkit.getOfflinePlayer(playerId), world);
-    }
-    
+    BigDecimal getBalance(UUID playerId, String world);
+
     /**
      * Gets balance of a player on the specified world.
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -213,10 +208,10 @@ public interface Economy {
      * @param world  name of the world
      * @return Amount currently held in players account
      */
-    default double getBalance(OfflinePlayer player, String world) {
-        return getBalance(player.getName(), world);
+    default BigDecimal getBalance(OfflinePlayer player, String world) {
+        return getBalance(player.getUniqueId(), world);
     }
-    
+
     /**
      * Checks if the player account has the amount - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -224,8 +219,8 @@ public interface Economy {
      * @param amount        to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    boolean has(String playerName, double amount);
-    
+    boolean has(String playerName, BigDecimal amount);
+
     /**
      * Checks if the player account has the amount - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -233,10 +228,10 @@ public interface Economy {
      * @param amount    to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(UUID playerId, double amount) {
+    default boolean has(UUID playerId, BigDecimal amount) {
         return has(Bukkit.getOfflinePlayer(playerId), amount);
     }
-    
+
     /**
      * Checks if the player account has the amount - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -244,10 +239,10 @@ public interface Economy {
      * @param amount to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(OfflinePlayer player, double amount) {
-        return has(player.getName(), amount);
+    default boolean has(OfflinePlayer player, BigDecimal amount) {
+        return has(player.getUniqueId(), amount);
     }
-    
+
     /**
      * Checks if the player account has the amount in a given world - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -257,8 +252,8 @@ public interface Economy {
      * @param amount        to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    boolean has(String playerName, String worldName, double amount);
-    
+    boolean has(String playerName, String worldName, BigDecimal amount);
+
     /**
      * Checks if the player account has the amount in a given world - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -268,10 +263,8 @@ public interface Economy {
      * @param amount    to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(UUID playerId, String worldName, double amount) {
-        return has(Bukkit.getOfflinePlayer(playerId), worldName, amount);
-    }
-    
+    boolean has(UUID playerId, String worldName, BigDecimal amount);
+
     /**
      * Checks if the player account has the amount in a given world - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -281,41 +274,42 @@ public interface Economy {
      * @param amount    to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(OfflinePlayer player, String worldName, double amount) {
-        return has(player.getName(), worldName, amount);
+    default boolean has(OfflinePlayer player, String worldName, BigDecimal amount) {
+        return has(player.getUniqueId(), worldName, amount);
     }
-    
+
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param playerName    to withdraw from
      * @param amount        Amount to withdraw
+     * @param reason        The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse withdrawPlayer(String playerName, double amount);
-    
+    EconomyResponse withdrawPlayer(String playerName, BigDecimal amount, String reason);
+
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param playerId  to withdraw from
      * @param amount    Amount to withdraw
+     * @param reason    The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse withdrawPlayer(UUID playerId, double amount) {
-        return withdrawPlayer(Bukkit.getOfflinePlayer(playerId), amount);
-    }
-    
+    EconomyResponse withdrawPlayer(UUID playerId, BigDecimal amount, String reason);
+
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param player to withdraw from
      * @param amount Amount to withdraw
+     * @param reason The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        return withdrawPlayer(player.getName(), amount);
+    default EconomyResponse withdrawPlayer(OfflinePlayer player, BigDecimal amount, String reason) {
+        return withdrawPlayer(player.getUniqueId(), amount, reason);
     }
-    
+
     /**
      * Withdraw an amount from a player on a given world - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -323,10 +317,11 @@ public interface Economy {
      * @param playerName    of the player to withdraw from
      * @param worldName     name of the world
      * @param amount        Amount to withdraw
+     * @param reason        The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse withdrawPlayer(String playerName, String worldName, double amount);
-    
+    EconomyResponse withdrawPlayer(String playerName, String worldName, BigDecimal amount, String reason);
+
     /**
      * Withdraw an amount from a player on a given world - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -334,56 +329,57 @@ public interface Economy {
      * @param playerId  of the player to withdraw from
      * @param worldName name of the world
      * @param amount    Amount to withdraw
+     * @param reason    The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse withdrawPlayer(UUID playerId, String worldName, double amount) {
-        return withdrawPlayer(Bukkit.getOfflinePlayer(playerId), worldName, amount);
-    }
-    
+    EconomyResponse withdrawPlayer(UUID playerId, String worldName, BigDecimal amount, String reason);
+
     /**
      * Withdraw an amount from a player on a given world - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
      *
      * @param player    to withdraw from
-     * @param worldName - name of the world
+     * @param worldName name of the world
      * @param amount    Amount to withdraw
+     * @param reason    The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        return withdrawPlayer(player.getName(), worldName, amount);
+    default EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, BigDecimal amount, String reason) {
+        return withdrawPlayer(player.getUniqueId(), worldName, amount, reason);
     }
-    
+
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param playerName    of the player to deposit to
      * @param amount        Amount to deposit
+     * @param reason        The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse depositPlayer(String playerName, double amount);
-    
+    EconomyResponse depositPlayer(String playerName, BigDecimal amount, String reason);
+
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param playerId  of the player to deposit to
      * @param amount    Amount to deposit
+     * @param reason    The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse depositPlayer(UUID playerId, double amount) {
-        return depositPlayer(Bukkit.getOfflinePlayer(playerId), amount);
-    }
-    
+    EconomyResponse depositPlayer(UUID playerId, BigDecimal amount, String reason);
+
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param player to deposit to
      * @param amount Amount to deposit
+     * @param reason The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        return depositPlayer(player.getName(), amount);
+    default EconomyResponse depositPlayer(OfflinePlayer player, BigDecimal amount, String reason) {
+        return depositPlayer(player.getUniqueId(), amount, reason);
     }
-    
+
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -391,10 +387,11 @@ public interface Economy {
      * @param playerName    of the player to deposit to
      * @param worldName     name of the world
      * @param amount        Amount to deposit
+     * @param reason        The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse depositPlayer(String playerName, String worldName, double amount);
-    
+    EconomyResponse depositPlayer(String playerName, String worldName, BigDecimal amount, String reason);
+
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -402,12 +399,11 @@ public interface Economy {
      * @param playerId  of the player to deposit to
      * @param worldName name of the world
      * @param amount    Amount to deposit
+     * @param reason    The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse depositPlayer(UUID playerId, String worldName, double amount) {
-        return depositPlayer(Bukkit.getOfflinePlayer(playerId), worldName, amount);
-    }
-    
+    EconomyResponse depositPlayer(UUID playerId, String worldName, BigDecimal amount, String reason);
+
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -415,12 +411,13 @@ public interface Economy {
      * @param player    to deposit to
      * @param worldName name of the world
      * @param amount    Amount to deposit
+     * @param reason    The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        return depositPlayer(player.getName(), worldName, amount);
+    default EconomyResponse depositPlayer(OfflinePlayer player, String worldName, BigDecimal amount, String reason) {
+        return depositPlayer(player.getUniqueId(), worldName, amount, reason);
     }
-    
+
     /**
      * Creates a bank account with the specified name and the player as the owner
      *
@@ -429,7 +426,7 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     EconomyResponse createBank(String name, String playerName);
-    
+
     /**
      * Creates a bank account with the specified name and the player as the owner
      *
@@ -437,10 +434,8 @@ public interface Economy {
      * @param playerId  the account should be linked to
      * @return EconomyResponse Object
      */
-    default EconomyResponse createBank(String name, UUID playerId) {
-        return createBank(name, Bukkit.getOfflinePlayer(playerId));
-    }
-    
+    EconomyResponse createBank(String name, UUID playerId);
+
     /**
      * Creates a bank account with the specified name and the player as the owner
      *
@@ -449,9 +444,9 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     default EconomyResponse createBank(String name, OfflinePlayer player) {
-        return createBank(name, player.getName());
+        return createBank(name, player.getUniqueId());
     }
-    
+
     /**
      * Deletes a bank account with the specified name.
      *
@@ -459,7 +454,7 @@ public interface Economy {
      * @return if the operation completed successfully
      */
     EconomyResponse deleteBank(String name);
-    
+
     /**
      * Returns the amount the bank has
      *
@@ -467,7 +462,7 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     EconomyResponse bankBalance(String name);
-    
+
     /**
      * Returns true or false whether the bank has the amount specified - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -475,26 +470,28 @@ public interface Economy {
      * @param amount to check for
      * @return EconomyResponse Object
      */
-    EconomyResponse bankHas(String name, double amount);
-    
+    EconomyResponse bankHas(String name, BigDecimal amount);
+
     /**
      * Withdraw an amount from a bank account - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param name   of the account
      * @param amount to withdraw
+     * @param reason The reason for this deposit e.g. the plugin name
      * @return EconomyResponse Object
      */
-    EconomyResponse bankWithdraw(String name, double amount);
-    
+    EconomyResponse bankWithdraw(String name, BigDecimal amount, String reason);
+
     /**
      * Deposit an amount into a bank account - DO NOT USE NEGATIVE AMOUNTS
      *
      * @param name   of the account
      * @param amount to deposit
+     * @param reason The reason for this deposit e.g. the plugin name
      * @return EconomyResponse Object
      */
-    EconomyResponse bankDeposit(String name, double amount);
-    
+    EconomyResponse bankDeposit(String name, BigDecimal amount, String reason);
+
     /**
      * Check if a player is the owner of a bank account
      *
@@ -503,7 +500,7 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     EconomyResponse isBankOwner(String name, String playerName);
-    
+
     /**
      * Check if a player is the owner of a bank account
      *
@@ -511,10 +508,8 @@ public interface Economy {
      * @param playerId  of the player to check for ownership
      * @return EconomyResponse Object
      */
-    default EconomyResponse isBankOwner(String name, UUID playerId) {
-        return isBankOwner(name, Bukkit.getOfflinePlayer(playerId));
-    }
-    
+    EconomyResponse isBankOwner(String name, UUID playerId);
+
     /**
      * Check if a player is the owner of a bank account
      *
@@ -523,9 +518,9 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     default EconomyResponse isBankOwner(String name, OfflinePlayer player) {
-        return isBankOwner(name, player.getName());
+        return isBankOwner(name, player.getUniqueId());
     }
-    
+
     /**
      * Check if the player is a member of the bank account
      *
@@ -534,7 +529,7 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     EconomyResponse isBankMember(String name, String playerName);
-    
+
     /**
      * Check if the player is a member of the bank account
      *
@@ -542,10 +537,8 @@ public interface Economy {
      * @param playerId  of the player to check membership
      * @return EconomyResponse Object
      */
-    default EconomyResponse isBankMember(String name, UUID playerId) {
-        return isBankMember(name, Bukkit.getOfflinePlayer(playerId));
-    }
-    
+    EconomyResponse isBankMember(String name, UUID playerId);
+
     /**
      * Check if the player is a member of the bank account
      *
@@ -554,16 +547,16 @@ public interface Economy {
      * @return EconomyResponse Object
      */
     default EconomyResponse isBankMember(String name, OfflinePlayer player) {
-        return isBankMember(name, player.getName());
+        return isBankMember(name, player.getUniqueId());
     }
-    
+
     /**
      * Gets the list of banks
      *
      * @return the List of Banks
      */
     List<String> getBanks();
-    
+
     /**
      * Attempts to create a player account for the given player
      *
@@ -571,17 +564,15 @@ public interface Economy {
      * @return if the account creation was successful
      */
     boolean createPlayerAccount(String playerName);
-    
+
     /**
      * Attempts to create a player account for the given player
      *
      * @param playerId  the name of the player to create the account for
      * @return if the account creation was successful
      */
-    default boolean createPlayerAccount(UUID playerId) {
-        return createPlayerAccount(Bukkit.getOfflinePlayer(playerId));
-    }
-    
+    boolean createPlayerAccount(UUID playerId);
+
     /**
      * Attempts to create a player account for the given player
      *
@@ -589,9 +580,9 @@ public interface Economy {
      * @return if the account creation was successful
      */
     default boolean createPlayerAccount(OfflinePlayer player) {
-        return createPlayerAccount(player.getName());
+        return createPlayerAccount(player.getUniqueId());
     }
-    
+
     /**
      * Attempts to create a player account for the given player on the specified world
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -601,7 +592,7 @@ public interface Economy {
      * @return if the account creation was successful
      */
     boolean createPlayerAccount(String playerName, String worldName);
-    
+
     /**
      * Attempts to create a player account for the given player on the specified world
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -610,10 +601,8 @@ public interface Economy {
      * @param worldName String name of the world
      * @return if the account creation was successful
      */
-    default boolean createPlayerAccount(UUID playerId, String worldName) {
-        return createPlayerAccount(Bukkit.getOfflinePlayer(playerId), worldName);
-    }
-    
+    boolean createPlayerAccount(UUID playerId, String worldName);
+
     /**
      * Attempts to create a player account for the given player on the specified world
      * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
@@ -623,6 +612,16 @@ public interface Economy {
      * @return if the account creation was successful
      */
     default boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        return createPlayerAccount(player.getName(), worldName);
+        return createPlayerAccount(player.getUniqueId(), worldName);
+    }
+
+    enum Feature {
+        BIG_DECIMAL,
+        BANK,
+        UUID,
+        NATIVE_UUID,
+        OFFLINE,
+        WORLD,
+        LOG;
     }
 }

@@ -1,15 +1,8 @@
 package de.minebench.tresor;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Collection;
-
 /*
  * Tresor - Abstraction library for Bukkit plugins
- * Copyright (C) 2020 Max Lee (https://github.com/Phoenix616)
+ * Copyright (C) 2020 Max Lee aka Phoenix616 (mail@moep.tv)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +17,13 @@ import java.util.Collection;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tresor.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Collection;
 
 public interface TresorServicesManager extends ServicesManager {
     
