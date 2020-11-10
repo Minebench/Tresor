@@ -2,7 +2,7 @@ package de.minebench.tresor;
 
 /*
  * Tresor - Abstraction library for Bukkit plugins
- * Copyright (C) 2020 Max Lee aka Phoenix616 (mail@moep.tv)
+ * Copyright (C) 2020 Max Lee aka Phoenix616 (max@themoep.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,11 +20,9 @@ package de.minebench.tresor;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-import de.minebench.tresor.economy.TresorEconomy;
+import de.minebench.tresor.economy.ModernEconomy;
 import de.themoep.hook.bukkit.HookManager;
-import de.themoep.hook.core.Hook;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -59,7 +57,7 @@ public class Tresor extends JavaPlugin {
     
     private void loadProviders() {
         new ProviderManager(Economy.class);
-        new ProviderManager(TresorEconomy.class);
+        new ProviderManager(ModernEconomy.class);
     }
     
     /**

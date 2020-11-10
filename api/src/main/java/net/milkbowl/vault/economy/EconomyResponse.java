@@ -15,6 +15,8 @@
  */
 package net.milkbowl.vault.economy;
 
+import de.minebench.tresor.economy.ModernEconomy;
+
 import java.math.BigDecimal;
 
 /**
@@ -98,7 +100,7 @@ public class EconomyResponse {
 
     /**
      * Convert to Tresor EconomyResponse
-     * @return The Tresor {@link de.minebench.tresor.economy.EconomyResponse} used by {@link de.minebench.tresor.economy.TresorEconomy}
+     * @return The Tresor {@link de.minebench.tresor.economy.EconomyResponse} used by {@link ModernEconomy}
      */
     public de.minebench.tresor.economy.EconomyResponse toTresor() {
         return new de.minebench.tresor.economy.EconomyResponse(

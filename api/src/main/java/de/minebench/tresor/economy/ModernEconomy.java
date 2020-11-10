@@ -6,10 +6,11 @@ import org.bukkit.OfflinePlayer;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /*
  * Tresor - Abstraction library for Bukkit plugins
- * Copyright (C) 2020 Max Lee aka Phoenix616 (mail@moep.tv)
+ * Copyright (C) 2020 Max Lee aka Phoenix616 (max@themoep.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -26,9 +27,9 @@ import java.util.UUID;
  */
 
 /**
- * The main economy API using industry standard BigDecimal for values
+ * The main economy API using industry standard {@link BigDecimal} for values and {@link java.util.concurrent.CompletableFuture}s to allow async usage if possible.
  */
-public interface TresorEconomy {
+public interface ModernEconomy {
 
     /**
      * Checks if economy method is enabled.
@@ -95,7 +96,7 @@ public interface TresorEconomy {
      * @param playerName to check
      * @return if the player has an account
      */
-    boolean hasAccount(String playerName);
+    CompletableFuture<Boolean> hasAccount(String playerName);
 
     /**
      * Checks if this player has an account on the server yet
@@ -105,7 +106,7 @@ public interface TresorEconomy {
      * @param playerId  to check
      * @return if the player has an account
      */
-    boolean hasAccount(UUID playerId);
+    CompletableFuture<Boolean> hasAccount(UUID playerId);
 
     /**
      * Checks if this player has an account on the server yet
@@ -115,7 +116,7 @@ public interface TresorEconomy {
      * @param player to check
      * @return if the player has an account
      */
-    default boolean hasAccount(OfflinePlayer player) {
+    default CompletableFuture<Boolean> hasAccount(OfflinePlayer player) {
         return hasAccount(player.getUniqueId());
     }
 
@@ -128,7 +129,7 @@ public interface TresorEconomy {
      * @param worldName  world-specific account
      * @return if the player has an account
      */
-    boolean hasAccount(String playerName, String worldName);
+    CompletableFuture<Boolean> hasAccount(String playerName, String worldName);
 
     /**
      * Checks if this player has an account on the server yet on the given world
@@ -139,7 +140,7 @@ public interface TresorEconomy {
      * @param worldName world-specific account
      * @return if the player has an account
      */
-    boolean hasAccount(UUID playerId, String worldName);
+    CompletableFuture<Boolean> hasAccount(UUID playerId, String worldName);
 
     /**
      * Checks if this player has an account on the server yet on the given world
@@ -150,7 +151,7 @@ public interface TresorEconomy {
      * @param worldName world-specific account
      * @return if the player has an account
      */
-    default boolean hasAccount(OfflinePlayer player, String worldName) {
+    default CompletableFuture<Boolean> hasAccount(OfflinePlayer player, String worldName) {
         return hasAccount(player.getUniqueId(), worldName);
     }
 
@@ -160,7 +161,7 @@ public interface TresorEconomy {
      * @param playerId  of the player
      * @return Amount currently held in players account
      */
-    BigDecimal getBalance(UUID playerId);
+    CompletableFuture<BigDecimal> getBalance(UUID playerId);
 
     /**
      * Gets balance of a player
@@ -168,7 +169,7 @@ public interface TresorEconomy {
      * @param playerName    of the player
      * @return Amount currently held in players account
      */
-    BigDecimal getBalance(String playerName);
+    CompletableFuture<BigDecimal> getBalance(String playerName);
 
     /**
      * Gets balance of a player
@@ -176,7 +177,7 @@ public interface TresorEconomy {
      * @param player    to check
      * @return Amount currently held in players account
      */
-    default BigDecimal getBalance(OfflinePlayer player) {
+    default CompletableFuture<BigDecimal> getBalance(OfflinePlayer player) {
         return getBalance(player.getUniqueId());
     }
 
@@ -188,7 +189,7 @@ public interface TresorEconomy {
      * @param world  name of the world
      * @return Amount currently held in players account
      */
-    BigDecimal getBalance(String playerName, String world);
+    CompletableFuture<BigDecimal> getBalance(String playerName, String world);
 
     /**
      * Gets balance of a player on the specified world.
@@ -198,7 +199,7 @@ public interface TresorEconomy {
      * @param world  name of the world
      * @return Amount currently held in players account
      */
-    BigDecimal getBalance(UUID playerId, String world);
+    CompletableFuture<BigDecimal> getBalance(UUID playerId, String world);
 
     /**
      * Gets balance of a player on the specified world.
@@ -208,7 +209,7 @@ public interface TresorEconomy {
      * @param world  name of the world
      * @return Amount currently held in players account
      */
-    default BigDecimal getBalance(OfflinePlayer player, String world) {
+    default CompletableFuture<BigDecimal> getBalance(OfflinePlayer player, String world) {
         return getBalance(player.getUniqueId(), world);
     }
 
@@ -219,7 +220,7 @@ public interface TresorEconomy {
      * @param amount        to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    boolean has(String playerName, BigDecimal amount);
+    CompletableFuture<Boolean> has(String playerName, BigDecimal amount);
 
     /**
      * Checks if the player account has the amount - DO NOT USE NEGATIVE AMOUNTS
@@ -228,7 +229,7 @@ public interface TresorEconomy {
      * @param amount    to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(UUID playerId, BigDecimal amount) {
+    default CompletableFuture<Boolean> has(UUID playerId, BigDecimal amount) {
         return has(Bukkit.getOfflinePlayer(playerId), amount);
     }
 
@@ -239,7 +240,7 @@ public interface TresorEconomy {
      * @param amount to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(OfflinePlayer player, BigDecimal amount) {
+    default CompletableFuture<Boolean> has(OfflinePlayer player, BigDecimal amount) {
         return has(player.getUniqueId(), amount);
     }
 
@@ -252,7 +253,7 @@ public interface TresorEconomy {
      * @param amount        to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    boolean has(String playerName, String worldName, BigDecimal amount);
+    CompletableFuture<Boolean> has(String playerName, String worldName, BigDecimal amount);
 
     /**
      * Checks if the player account has the amount in a given world - DO NOT USE NEGATIVE AMOUNTS
@@ -263,7 +264,7 @@ public interface TresorEconomy {
      * @param amount    to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    boolean has(UUID playerId, String worldName, BigDecimal amount);
+    CompletableFuture<Boolean> has(UUID playerId, String worldName, BigDecimal amount);
 
     /**
      * Checks if the player account has the amount in a given world - DO NOT USE NEGATIVE AMOUNTS
@@ -274,7 +275,7 @@ public interface TresorEconomy {
      * @param amount    to check for
      * @return True if <b>player</b> has <b>amount</b>, False else wise
      */
-    default boolean has(OfflinePlayer player, String worldName, BigDecimal amount) {
+    default CompletableFuture<Boolean> has(OfflinePlayer player, String worldName, BigDecimal amount) {
         return has(player.getUniqueId(), worldName, amount);
     }
 
@@ -286,7 +287,7 @@ public interface TresorEconomy {
      * @param reason        The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse withdrawPlayer(String playerName, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> withdrawPlayer(String playerName, BigDecimal amount, String reason);
 
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
@@ -296,7 +297,7 @@ public interface TresorEconomy {
      * @param reason    The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse withdrawPlayer(UUID playerId, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> withdrawPlayer(UUID playerId, BigDecimal amount, String reason);
 
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
@@ -306,7 +307,7 @@ public interface TresorEconomy {
      * @param reason The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse withdrawPlayer(OfflinePlayer player, BigDecimal amount, String reason) {
+    default CompletableFuture<EconomyResponse> withdrawPlayer(OfflinePlayer player, BigDecimal amount, String reason) {
         return withdrawPlayer(player.getUniqueId(), amount, reason);
     }
 
@@ -320,7 +321,7 @@ public interface TresorEconomy {
      * @param reason        The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse withdrawPlayer(String playerName, String worldName, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> withdrawPlayer(String playerName, String worldName, BigDecimal amount, String reason);
 
     /**
      * Withdraw an amount from a player on a given world - DO NOT USE NEGATIVE AMOUNTS
@@ -332,7 +333,7 @@ public interface TresorEconomy {
      * @param reason    The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse withdrawPlayer(UUID playerId, String worldName, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> withdrawPlayer(UUID playerId, String worldName, BigDecimal amount, String reason);
 
     /**
      * Withdraw an amount from a player on a given world - DO NOT USE NEGATIVE AMOUNTS
@@ -344,7 +345,7 @@ public interface TresorEconomy {
      * @param reason    The reason for this withdrawal e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, BigDecimal amount, String reason) {
+    default CompletableFuture<EconomyResponse> withdrawPlayer(OfflinePlayer player, String worldName, BigDecimal amount, String reason) {
         return withdrawPlayer(player.getUniqueId(), worldName, amount, reason);
     }
 
@@ -356,7 +357,7 @@ public interface TresorEconomy {
      * @param reason        The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse depositPlayer(String playerName, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> depositPlayer(String playerName, BigDecimal amount, String reason);
 
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
@@ -366,7 +367,7 @@ public interface TresorEconomy {
      * @param reason    The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse depositPlayer(UUID playerId, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> depositPlayer(UUID playerId, BigDecimal amount, String reason);
 
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
@@ -376,7 +377,7 @@ public interface TresorEconomy {
      * @param reason The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse depositPlayer(OfflinePlayer player, BigDecimal amount, String reason) {
+    default CompletableFuture<EconomyResponse> depositPlayer(OfflinePlayer player, BigDecimal amount, String reason) {
         return depositPlayer(player.getUniqueId(), amount, reason);
     }
 
@@ -390,7 +391,7 @@ public interface TresorEconomy {
      * @param reason        The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse depositPlayer(String playerName, String worldName, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> depositPlayer(String playerName, String worldName, BigDecimal amount, String reason);
 
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
@@ -402,7 +403,7 @@ public interface TresorEconomy {
      * @param reason    The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    EconomyResponse depositPlayer(UUID playerId, String worldName, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> depositPlayer(UUID playerId, String worldName, BigDecimal amount, String reason);
 
     /**
      * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
@@ -414,7 +415,7 @@ public interface TresorEconomy {
      * @param reason    The reason for this deposit e.g. the plugin name
      * @return Detailed response of transaction
      */
-    default EconomyResponse depositPlayer(OfflinePlayer player, String worldName, BigDecimal amount, String reason) {
+    default CompletableFuture<EconomyResponse> depositPlayer(OfflinePlayer player, String worldName, BigDecimal amount, String reason) {
         return depositPlayer(player.getUniqueId(), worldName, amount, reason);
     }
 
@@ -425,7 +426,7 @@ public interface TresorEconomy {
      * @param playerName    the account should be linked to
      * @return EconomyResponse Object
      */
-    EconomyResponse createBank(String name, String playerName);
+    CompletableFuture<EconomyResponse> createBank(String name, String playerName);
 
     /**
      * Creates a bank account with the specified name and the player as the owner
@@ -434,7 +435,7 @@ public interface TresorEconomy {
      * @param playerId  the account should be linked to
      * @return EconomyResponse Object
      */
-    EconomyResponse createBank(String name, UUID playerId);
+    CompletableFuture<EconomyResponse> createBank(String name, UUID playerId);
 
     /**
      * Creates a bank account with the specified name and the player as the owner
@@ -443,7 +444,7 @@ public interface TresorEconomy {
      * @param player the account should be linked to
      * @return EconomyResponse Object
      */
-    default EconomyResponse createBank(String name, OfflinePlayer player) {
+    default CompletableFuture<EconomyResponse> createBank(String name, OfflinePlayer player) {
         return createBank(name, player.getUniqueId());
     }
 
@@ -453,7 +454,7 @@ public interface TresorEconomy {
      * @param name of the back to delete
      * @return if the operation completed successfully
      */
-    EconomyResponse deleteBank(String name);
+    CompletableFuture<EconomyResponse> deleteBank(String name);
 
     /**
      * Returns the amount the bank has
@@ -461,7 +462,7 @@ public interface TresorEconomy {
      * @param name of the account
      * @return EconomyResponse Object
      */
-    EconomyResponse bankBalance(String name);
+    CompletableFuture<EconomyResponse> bankBalance(String name);
 
     /**
      * Returns true or false whether the bank has the amount specified - DO NOT USE NEGATIVE AMOUNTS
@@ -470,7 +471,7 @@ public interface TresorEconomy {
      * @param amount to check for
      * @return EconomyResponse Object
      */
-    EconomyResponse bankHas(String name, BigDecimal amount);
+    CompletableFuture<EconomyResponse> bankHas(String name, BigDecimal amount);
 
     /**
      * Withdraw an amount from a bank account - DO NOT USE NEGATIVE AMOUNTS
@@ -480,7 +481,7 @@ public interface TresorEconomy {
      * @param reason The reason for this deposit e.g. the plugin name
      * @return EconomyResponse Object
      */
-    EconomyResponse bankWithdraw(String name, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> bankWithdraw(String name, BigDecimal amount, String reason);
 
     /**
      * Deposit an amount into a bank account - DO NOT USE NEGATIVE AMOUNTS
@@ -490,7 +491,7 @@ public interface TresorEconomy {
      * @param reason The reason for this deposit e.g. the plugin name
      * @return EconomyResponse Object
      */
-    EconomyResponse bankDeposit(String name, BigDecimal amount, String reason);
+    CompletableFuture<EconomyResponse> bankDeposit(String name, BigDecimal amount, String reason);
 
     /**
      * Check if a player is the owner of a bank account
@@ -499,7 +500,7 @@ public interface TresorEconomy {
      * @param playerName    of the player to check for ownership
      * @return EconomyResponse Object
      */
-    EconomyResponse isBankOwner(String name, String playerName);
+    CompletableFuture<EconomyResponse> isBankOwner(String name, String playerName);
 
     /**
      * Check if a player is the owner of a bank account
@@ -508,7 +509,7 @@ public interface TresorEconomy {
      * @param playerId  of the player to check for ownership
      * @return EconomyResponse Object
      */
-    EconomyResponse isBankOwner(String name, UUID playerId);
+    CompletableFuture<EconomyResponse> isBankOwner(String name, UUID playerId);
 
     /**
      * Check if a player is the owner of a bank account
@@ -517,7 +518,7 @@ public interface TresorEconomy {
      * @param player to check for ownership
      * @return EconomyResponse Object
      */
-    default EconomyResponse isBankOwner(String name, OfflinePlayer player) {
+    default CompletableFuture<EconomyResponse> isBankOwner(String name, OfflinePlayer player) {
         return isBankOwner(name, player.getUniqueId());
     }
 
@@ -528,7 +529,7 @@ public interface TresorEconomy {
      * @param playerName    of the player to check membership
      * @return EconomyResponse Object
      */
-    EconomyResponse isBankMember(String name, String playerName);
+    CompletableFuture<EconomyResponse> isBankMember(String name, String playerName);
 
     /**
      * Check if the player is a member of the bank account
@@ -537,7 +538,7 @@ public interface TresorEconomy {
      * @param playerId  of the player to check membership
      * @return EconomyResponse Object
      */
-    EconomyResponse isBankMember(String name, UUID playerId);
+    CompletableFuture<EconomyResponse> isBankMember(String name, UUID playerId);
 
     /**
      * Check if the player is a member of the bank account
@@ -546,7 +547,7 @@ public interface TresorEconomy {
      * @param player to check membership
      * @return EconomyResponse Object
      */
-    default EconomyResponse isBankMember(String name, OfflinePlayer player) {
+    default CompletableFuture<EconomyResponse> isBankMember(String name, OfflinePlayer player) {
         return isBankMember(name, player.getUniqueId());
     }
 
@@ -555,7 +556,7 @@ public interface TresorEconomy {
      *
      * @return the List of Banks
      */
-    List<String> getBanks();
+    CompletableFuture<List<String>> getBanks();
 
     /**
      * Attempts to create a player account for the given player
@@ -563,7 +564,7 @@ public interface TresorEconomy {
      * @param playerName    the name of the player to create the account for
      * @return if the account creation was successful
      */
-    boolean createPlayerAccount(String playerName);
+    CompletableFuture<Boolean> createPlayerAccount(String playerName);
 
     /**
      * Attempts to create a player account for the given player
@@ -571,7 +572,7 @@ public interface TresorEconomy {
      * @param playerId  the name of the player to create the account for
      * @return if the account creation was successful
      */
-    boolean createPlayerAccount(UUID playerId);
+    CompletableFuture<Boolean> createPlayerAccount(UUID playerId);
 
     /**
      * Attempts to create a player account for the given player
@@ -579,7 +580,7 @@ public interface TresorEconomy {
      * @param player    the player to create the account for
      * @return if the account creation was successful
      */
-    default boolean createPlayerAccount(OfflinePlayer player) {
+    default CompletableFuture<Boolean> createPlayerAccount(OfflinePlayer player) {
         return createPlayerAccount(player.getUniqueId());
     }
 
@@ -591,7 +592,7 @@ public interface TresorEconomy {
      * @param worldName     String name of the world
      * @return if the account creation was successful
      */
-    boolean createPlayerAccount(String playerName, String worldName);
+    CompletableFuture<Boolean> createPlayerAccount(String playerName, String worldName);
 
     /**
      * Attempts to create a player account for the given player on the specified world
@@ -601,7 +602,7 @@ public interface TresorEconomy {
      * @param worldName String name of the world
      * @return if the account creation was successful
      */
-    boolean createPlayerAccount(UUID playerId, String worldName);
+    CompletableFuture<Boolean> createPlayerAccount(UUID playerId, String worldName);
 
     /**
      * Attempts to create a player account for the given player on the specified world
@@ -611,7 +612,7 @@ public interface TresorEconomy {
      * @param worldName String name of the world
      * @return if the account creation was successful
      */
-    default boolean createPlayerAccount(OfflinePlayer player, String worldName) {
+    default CompletableFuture<Boolean> createPlayerAccount(OfflinePlayer player, String worldName) {
         return createPlayerAccount(player.getUniqueId(), worldName);
     }
 

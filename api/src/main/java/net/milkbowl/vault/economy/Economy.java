@@ -19,13 +19,13 @@ package net.milkbowl.vault.economy;
 import java.util.List;
 import java.util.UUID;
 
-import de.minebench.tresor.economy.TresorEconomy;
+import de.minebench.tresor.economy.ModernEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 /**
  * Vault's legacy economy API
- * @deprecated Use the {@link TresorEconomy} to avoid rounding errors
+ * @deprecated Use the {@link ModernEconomy} to avoid rounding errors
  */
 @Deprecated
 public interface Economy {
