@@ -33,12 +33,11 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+
+import static de.minebench.tresor.TresorUtils.future;
 
 public class TresorModernEconomy extends Provider<ModernEconomy, Tresor> implements ModernEconomy, Listener {
 
@@ -80,17 +79,6 @@ public class TresorModernEconomy extends Provider<ModernEconomy, Tresor> impleme
     public void onServiceUnregister(ServiceUnregisterEvent event) {
         updateProvider();
     }
-
-    private static <T> CompletableFuture<T> future(Callable<T> callable) {
-        CompletableFuture<T> future = new CompletableFuture<>();
-        try {
-            future.complete(callable.call());
-        } catch (Exception e) {
-            future.completeExceptionally(e);
-        }
-        return future;
-    }
-
     @Override
     public boolean isEnabled() {
         return economy != null && economy.isEnabled();

@@ -25,6 +25,13 @@ import java.util.concurrent.CompletableFuture;
 
 public class TresorUtils {
 
+    /**
+     * Create a future and complete it asynchronously with the Bukkit scheduler
+     * @param plugin    The plugin used for creating the async task
+     * @param callable  The callable
+     * @param <T>       The return type of the callable
+     * @return The future which will be completed
+     */
     public static <T> CompletableFuture<T> asyncFuture(Plugin plugin, Callable<T> callable) {
         CompletableFuture<T> future = new CompletableFuture<>();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -34,6 +41,22 @@ public class TresorUtils {
                 future.completeExceptionally(e);
             }
         });
+        return future;
+    }
+
+    /**
+     * Create a future and instantly complete it with the callable (or exceptionally)
+     * @param callable  The callable
+     * @param <T>       The return type of the callable
+     * @return An already completed completable future
+     */
+    public static <T> CompletableFuture<T> future(Callable<T> callable) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        try {
+            future.complete(callable.call());
+        } catch (Exception e) {
+            future.completeExceptionally(e);
+        }
         return future;
     }
 }

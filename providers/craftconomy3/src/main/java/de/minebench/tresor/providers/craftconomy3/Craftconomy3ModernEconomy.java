@@ -25,7 +25,6 @@ import com.greatmancode.craftconomy3.currency.Currency;
 import com.greatmancode.craftconomy3.groups.WorldGroupsManager;
 import com.greatmancode.craftconomy3.tools.interfaces.BukkitLoader;
 import de.minebench.tresor.Provider;
-import de.minebench.tresor.TresorUtils;
 import de.minebench.tresor.economy.EconomyResponse;
 import de.minebench.tresor.economy.ModernEconomy;
 import org.bukkit.Bukkit;
@@ -36,6 +35,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import static de.minebench.tresor.TresorUtils.asyncFuture;
+import static de.minebench.tresor.TresorUtils.future;
 
 public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoader> implements ModernEconomy {
 
@@ -161,7 +163,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<Boolean> hasAccount(String playerName) {
-        return TresorUtils.asyncFuture(getHooked(), () -> playerName != null && Common.getInstance().getAccountManager().exist(playerName, false));
+        return asyncFuture(getHooked(), () -> playerName != null && Common.getInstance().getAccountManager().exist(playerName, false));
     }
 
     @Override
@@ -171,7 +173,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<Boolean> hasAccount(UUID playerId) {
-        return TresorUtils.asyncFuture(getHooked(), () -> getAccount(playerId) != null);
+        return asyncFuture(getHooked(), () -> getAccount(playerId) != null);
     }
 
     @Override
@@ -206,7 +208,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<BigDecimal> getBalance(String playerName, String worldName) {
-        return TresorUtils.asyncFuture(getHooked(), () -> getBalanceInternal(playerName, worldName));
+        return asyncFuture(getHooked(), () -> getBalanceInternal(playerName, worldName));
     }
 
     @Override
@@ -216,7 +218,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<BigDecimal> getBalance(UUID playerId, String worldName) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             Account account = getAccount(playerId);
             if (account == null) {
                 return ZERO;
@@ -242,7 +244,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<Boolean> has(String playerName, String worldName, BigDecimal amount) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             Account account = getAccount(playerName);
             return account != null && account.hasEnough(amount.doubleValue(), worldName, getCurrency(worldName).getName());
         });
@@ -255,7 +257,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<Boolean> has(UUID playerId, String worldName, BigDecimal amount) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             Account account = getAccount(playerId);
             return account != null && account.hasEnough(amount.doubleValue(), worldName, getCurrency(worldName).getName());
         });
@@ -278,7 +280,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> withdrawPlayer(String playerName, String worldName, BigDecimal amount, String reason) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return future(() -> {
             if (amount.compareTo(ZERO) < 0) {
                 return new EconomyResponse(ZERO, getBalanceInternal(playerName, worldName), EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
             }
@@ -302,7 +304,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> withdrawPlayer(UUID playerId, String worldName, BigDecimal amount, String reason) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             if (amount.compareTo(ZERO) < 0) {
                 return new EconomyResponse(ZERO, getBalanceInternal(playerId, worldName), EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
             }
@@ -336,7 +338,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> depositPlayer(String playerName, String worldName, BigDecimal amount, String reason) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return future(() -> {
             if (amount.compareTo(ZERO) < 0) {
                 return new EconomyResponse(BigDecimal.ZERO, getBalanceInternal(playerName, worldName), EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
             }
@@ -355,7 +357,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> depositPlayer(UUID playerId, String worldName, BigDecimal amount, String reason) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             if (amount.compareTo(ZERO) < 0) {
                 return new EconomyResponse(ZERO, getBalanceInternal(playerId, worldName), EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
             }
@@ -369,7 +371,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> createBank(String bankName, String playerName) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             boolean success = false;
             if (!Common.getInstance().getAccountManager().exist(bankName, true)) {
                 Common.getInstance().getAccountManager().getAccount(bankName, true).getAccountACL().set(playerName, true, true, true, true, true);
@@ -395,7 +397,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> deleteBank(String bankName) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             boolean success = Common.getInstance().getAccountManager().delete(bankName, true);
             if (success) {
                 return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.SUCCESS, "");
@@ -407,7 +409,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> bankBalance(String bankName) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             if (Common.getInstance().getAccountManager().exist(bankName, true)) {
                 double balance = Common.getInstance().getAccountManager().getAccount(bankName, true)
                         .getBalance(WorldGroupsManager.DEFAULT_GROUP_NAME, Common.getInstance().getCurrencyManager().getDefaultBankCurrency().getName());
@@ -419,13 +421,13 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> bankHas(String bankName, BigDecimal amount) {
-        return TresorUtils.asyncFuture(getHooked(), () -> {
+        return asyncFuture(getHooked(), () -> {
             if (Common.getInstance().getAccountManager().exist(bankName, true)) {
                 Account account = Common.getInstance().getAccountManager().getAccount(bankName, true);
                 if (account.hasEnough(amount.doubleValue(), Common.getInstance().getServerCaller().getDefaultWorld(), Common.getInstance().getCurrencyManager().getDefaultBankCurrency().getName())) {
-                    return new EconomyResponse(ZERO, bankBalance(bankName).getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+                    return new EconomyResponse(ZERO, bankBalance(bankName).get().getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
                 } else {
-                    return new EconomyResponse(ZERO, bankBalance(bankName).getBalance(), EconomyResponse.ResponseType.FAILURE, "The bank does not have enough money!");
+                    return new EconomyResponse(ZERO, bankBalance(bankName).get().getBalance(), EconomyResponse.ResponseType.FAILURE, "The bank does not have enough money!");
                 }
             }
             return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
@@ -434,46 +436,52 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> bankWithdraw(String bankName, BigDecimal amount, String reason) {
-        if (amount.compareTo(ZERO) < 0) {
-            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
-        }
-
-        EconomyResponse er = bankHas(bankName, amount);
-        if (!er.transactionSuccess()) {
-            return er;
-        } else {
-            if (Common.getInstance().getAccountManager().exist(bankName, true)) {
-                double balance = Common.getInstance().getAccountManager().getAccount(bankName, true)
-                        .withdraw(amount.doubleValue(),WorldGroupsManager.DEFAULT_GROUP_NAME, Common.getInstance().getCurrencyManager().getDefaultBankCurrency().getName(), Cause.VAULT, reason);
-                return new EconomyResponse(amount, BigDecimal.valueOf(balance), EconomyResponse.ResponseType.SUCCESS, "");
+        return future(() -> {
+            if (amount.compareTo(ZERO) < 0) {
+                return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
             }
-            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
-        }
+
+            EconomyResponse er = bankHas(bankName, amount).get();
+            if (!er.transactionSuccess()) {
+                return er;
+            } else {
+                if (Common.getInstance().getAccountManager().exist(bankName, true)) {
+                    double balance = Common.getInstance().getAccountManager().getAccount(bankName, true)
+                            .withdraw(amount.doubleValue(), WorldGroupsManager.DEFAULT_GROUP_NAME, Common.getInstance().getCurrencyManager().getDefaultBankCurrency().getName(), Cause.VAULT, reason);
+                    return new EconomyResponse(amount, BigDecimal.valueOf(balance), EconomyResponse.ResponseType.SUCCESS, "");
+                }
+                return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
+            }
+        });
     }
 
     @Override
     public CompletableFuture<EconomyResponse> bankDeposit(String bankName, BigDecimal amount, String reason) {
-        if (amount.compareTo(ZERO) < 0) {
-            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
-        }
+        return future(() -> {
+            if (amount.compareTo(ZERO) < 0) {
+                return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
+            }
 
-        if (Common.getInstance().getAccountManager().exist(bankName, true)) {
-            double balance = Common.getInstance().getAccountManager().getAccount(bankName, true)
-                    .deposit(amount.doubleValue(),WorldGroupsManager.DEFAULT_GROUP_NAME, Common.getInstance().getCurrencyManager().getDefaultBankCurrency().getName(), Cause.VAULT, reason);
-            return new EconomyResponse(amount, BigDecimal.valueOf(balance), EconomyResponse.ResponseType.SUCCESS, "");
-        }
-        return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
+            if (Common.getInstance().getAccountManager().exist(bankName, true)) {
+                double balance = Common.getInstance().getAccountManager().getAccount(bankName, true)
+                        .deposit(amount.doubleValue(),WorldGroupsManager.DEFAULT_GROUP_NAME, Common.getInstance().getCurrencyManager().getDefaultBankCurrency().getName(), Cause.VAULT, reason);
+                return new EconomyResponse(amount, BigDecimal.valueOf(balance), EconomyResponse.ResponseType.SUCCESS, "");
+            }
+            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
+        });
     }
 
     @Override
     public CompletableFuture<EconomyResponse> isBankOwner(String bankName, String playerName) {
-        if (Common.getInstance().getAccountManager().exist(bankName, true)) {
-            if (Common.getInstance().getAccountManager().getAccount(bankName, true).getAccountACL().isOwner(playerName)) {
-                return new EconomyResponse(ZERO, bankBalance(bankName).getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        return future(() -> {
+            if (Common.getInstance().getAccountManager().exist(bankName, true)) {
+                if (Common.getInstance().getAccountManager().getAccount(bankName, true).getAccountACL().isOwner(playerName)) {
+                    return new EconomyResponse(ZERO, bankBalance(bankName).get().getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+                }
+                return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "This player is not the owner of the bank!");
             }
-            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "This player is not the owner of the bank!");
-        }
-        return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
+            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "That bank does not exist!");
+        });
     }
 
     @Override
@@ -488,18 +496,20 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<EconomyResponse> isBankMember(String bankName, String playerName) {
-        EconomyResponse er = isBankOwner(bankName, playerName);
-        if (er.transactionSuccess()) {
-            return er;
-        } else {
-            if (Common.getInstance().getAccountManager().exist(bankName, true)) {
-                Account account = Common.getInstance().getAccountManager().getAccount(bankName, true);
-                if (account.getAccountACL().canDeposit(playerName) && account.getAccountACL().canWithdraw(playerName)) {
-                    return new EconomyResponse(ZERO, bankBalance(bankName).getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        return future(() -> {
+            EconomyResponse er = isBankOwner(bankName, playerName).get();
+            if (er.transactionSuccess()) {
+                return er;
+            } else {
+                if (Common.getInstance().getAccountManager().exist(bankName, true)) {
+                    Account account = Common.getInstance().getAccountManager().getAccount(bankName, true);
+                    if (account.getAccountACL().canDeposit(playerName) && account.getAccountACL().canWithdraw(playerName)) {
+                        return new EconomyResponse(ZERO, bankBalance(bankName).get().getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+                    }
                 }
+                return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "This player is not a member of the bank!");
             }
-            return new EconomyResponse(ZERO, ZERO, EconomyResponse.ResponseType.FAILURE, "This player is not a member of the bank!");
-        }
+        });
     }
 
     @Override
@@ -514,36 +524,42 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public CompletableFuture<List<String>> getBanks() {
-        return Common.getInstance().getAccountManager().getAllAccounts(true);
+        return asyncFuture(getHooked(), () -> Common.getInstance().getAccountManager().getAllAccounts(true));
     }
 
     @Override
     public CompletableFuture<Boolean> createPlayerAccount(String playerName) {
-        if (hasAccount(playerName)) {
-            return false;
-        }
-        Common.getInstance().getAccountManager().getAccount(playerName, false);
-        return true;
+        return asyncFuture(getHooked(), () -> {
+            if (hasAccount(playerName).get()) {
+                return false;
+            }
+            Common.getInstance().getAccountManager().getAccount(playerName, false);
+            return true;
+        });
     }
 
     @Override
     public CompletableFuture<Boolean> createPlayerAccount(UUID playerId) {
-        if (hasAccount(playerId)) {
-            return false;
-        }
-        Account account = Common.getInstance().getAccountManager().getAccount(getName(playerId), false);
-        Common.getInstance().getStorageHandler().getStorageEngine().updateUsername(account.getAccountName().toLowerCase(), playerId);
-        return true;
+        return asyncFuture(getHooked(), () -> {
+            if (hasAccount(playerId).get()) {
+                return false;
+            }
+            Account account = Common.getInstance().getAccountManager().getAccount(getName(playerId), false);
+            Common.getInstance().getStorageHandler().getStorageEngine().updateUsername(account.getAccountName().toLowerCase(), playerId);
+            return true;
+        });
     }
 
     @Override
     public CompletableFuture<Boolean> createPlayerAccount(OfflinePlayer offlinePlayer) {
-        if (hasAccount(offlinePlayer)) {
-            return false;
-        }
-        Account account = Common.getInstance().getAccountManager().getAccount(getName(offlinePlayer), false);
-        Common.getInstance().getStorageHandler().getStorageEngine().updateUsername(account.getAccountName().toLowerCase(), offlinePlayer.getUniqueId());
-        return true;
+        return asyncFuture(getHooked(), () -> {
+            if (hasAccount(offlinePlayer).get()) {
+                return false;
+            }
+            Account account = Common.getInstance().getAccountManager().getAccount(getName(offlinePlayer), false);
+            Common.getInstance().getStorageHandler().getStorageEngine().updateUsername(account.getAccountName().toLowerCase(), offlinePlayer.getUniqueId());
+            return true;
+        });
     }
 
     @Override
