@@ -14,9 +14,9 @@ implemented and should already work.
 
 ## Included Abstractions
 - [x] Economy
-- [ ] BigDecimal Economy
-- [ ] Async Economy
+- [x] Modern Economy using BigDecimal and CompletableFutures
 - [x] Permissions
+- [ ] Modern, async Permissions provider using CompletableFutures
 - [x] Chat
 - [ ] UUID/Username/Profile storage and lookup
 - [ ] Local Namechange storage and lookup
