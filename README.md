@@ -23,6 +23,7 @@ implemented and should already work.
 - [ ] Item data storage
 - [ ] Friends 
 - [ ] Parties/clans/guilds
+- [ ] Component parsing
 - [ ] Placeholders
 - [ ] Region protection/claim management
 - [ ] Single block access management
