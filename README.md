@@ -30,6 +30,7 @@ Take a look at the lists below at which features are implemented and should alre
 - [ ] Region protection/claim management
 - [ ] Single block protection management
 - [ ] Player statuses (AFK, DND, Vanished, etc)
+- [ ] Player authentication
 - [ ] Logging (player info and blocks, including querying and rollback)
 
 See the [project](https://github.com/Minebench/Tresor/projects/1) for a better overview.
