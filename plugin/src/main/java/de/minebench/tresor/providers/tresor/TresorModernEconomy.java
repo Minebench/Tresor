@@ -20,8 +20,8 @@ package de.minebench.tresor.providers.tresor;
 
 import de.minebench.tresor.Provider;
 import de.minebench.tresor.Tresor;
-import de.minebench.tresor.economy.EconomyResponse;
-import de.minebench.tresor.economy.ModernEconomy;
+import de.minebench.tresor.services.economy.EconomyResponse;
+import de.minebench.tresor.services.economy.ModernEconomy;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

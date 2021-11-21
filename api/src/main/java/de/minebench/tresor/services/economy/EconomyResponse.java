@@ -1,8 +1,8 @@
-package de.minebench.tresor.economy;
+package de.minebench.tresor.services.economy;
 
 /*
  * Tresor - Abstraction library for Bukkit plugins
- * Copyright (C) 2020 Max Lee aka Phoenix616 (max@themoep.de)
+ * Copyright (C) 2021 Max Lee aka Phoenix616 (max@themoep.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

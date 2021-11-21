@@ -19,7 +19,7 @@ package net.milkbowl.vault.economy;
 import java.util.List;
 import java.util.UUID;
 
-import de.minebench.tresor.economy.ModernEconomy;
+import de.minebench.tresor.services.economy.ModernEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 

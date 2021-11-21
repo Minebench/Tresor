@@ -1,4 +1,4 @@
-package de.minebench.tresor.economy;
+package de.minebench.tresor.services.economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 /*
  * Tresor - Abstraction library for Bukkit plugins
- * Copyright (C) 2020 Max Lee aka Phoenix616 (max@themoep.de)
+ * Copyright (C) 2021 Max Lee aka Phoenix616 (max@themoep.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
  */
 
 /**
- * The main economy API using industry standard {@link BigDecimal} for values and {@link java.util.concurrent.CompletableFuture}s to allow async usage if possible.
+ * The main economy service API using industry standard {@link BigDecimal} for values and {@link java.util.concurrent.CompletableFuture}s to allow async usage if possible.
  */
 public interface ModernEconomy {
 
@@ -617,6 +617,7 @@ public interface ModernEconomy {
     }
 
     enum Feature {
+        ASYNC,
         BIG_DECIMAL,
         BANK,
         UUID,

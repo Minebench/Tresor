@@ -15,7 +15,7 @@
  */
 package net.milkbowl.vault.economy;
 
-import de.minebench.tresor.economy.ModernEconomy;
+import de.minebench.tresor.services.economy.ModernEconomy;
 
 import java.math.BigDecimal;
 
@@ -25,7 +25,7 @@ import java.math.BigDecimal;
  * It includes a {@link ResponseType} indicating whether the plugin currently being used for Economy actually allows
  * the method, or if the operation was a success or failure.
  *
- * @deprecated Use the {@link de.minebench.tresor.economy.EconomyResponse}
+ * @deprecated Use the {@link de.minebench.tresor.services.economy.EconomyResponse}
  */
 @Deprecated
 public class EconomyResponse {
@@ -48,8 +48,8 @@ public class EconomyResponse {
             return id;
         }
 
-        public de.minebench.tresor.economy.EconomyResponse.ResponseType toTresor() {
-            return de.minebench.tresor.economy.EconomyResponse.ResponseType.valueOf(name());
+        public de.minebench.tresor.services.economy.EconomyResponse.ResponseType toTresor() {
+            return de.minebench.tresor.services.economy.EconomyResponse.ResponseType.valueOf(name());
         }
     }
 
@@ -100,10 +100,10 @@ public class EconomyResponse {
 
     /**
      * Convert to Tresor EconomyResponse
-     * @return The Tresor {@link de.minebench.tresor.economy.EconomyResponse} used by {@link ModernEconomy}
+     * @return The Tresor {@link de.minebench.tresor.services.economy.EconomyResponse} used by {@link ModernEconomy}
      */
-    public de.minebench.tresor.economy.EconomyResponse toTresor() {
-        return new de.minebench.tresor.economy.EconomyResponse(
+    public de.minebench.tresor.services.economy.EconomyResponse toTresor() {
+        return new de.minebench.tresor.services.economy.EconomyResponse(
                 BigDecimal.valueOf(amount),
                 BigDecimal.valueOf(balance),
                 type.toTresor(),

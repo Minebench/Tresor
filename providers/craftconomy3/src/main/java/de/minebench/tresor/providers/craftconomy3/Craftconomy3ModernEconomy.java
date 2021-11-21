@@ -25,8 +25,8 @@ import com.greatmancode.craftconomy3.currency.Currency;
 import com.greatmancode.craftconomy3.groups.WorldGroupsManager;
 import com.greatmancode.craftconomy3.tools.interfaces.BukkitLoader;
 import de.minebench.tresor.Provider;
-import de.minebench.tresor.economy.EconomyResponse;
-import de.minebench.tresor.economy.ModernEconomy;
+import de.minebench.tresor.services.economy.EconomyResponse;
+import de.minebench.tresor.services.economy.ModernEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -128,6 +128,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
     @Override
     public boolean supports(Feature feature) {
         switch (feature) {
+            case ASYNC:
             case WORLD:
             case LOG:
             case UUID:

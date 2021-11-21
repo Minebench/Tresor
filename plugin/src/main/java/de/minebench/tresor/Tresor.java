@@ -20,7 +20,7 @@ package de.minebench.tresor;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-import de.minebench.tresor.economy.ModernEconomy;
+import de.minebench.tresor.services.economy.ModernEconomy;
 import de.themoep.hook.bukkit.HookManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.java.JavaPlugin;
