@@ -18,23 +18,24 @@ package de.minebench.tresor;
  * along with Tresor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.plugin.Plugin;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TresorUtils {
 
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
+
     /**
-     * Create a future and complete it asynchronously with the Bukkit scheduler
-     * @param plugin    The plugin used for creating the async task
-     * @param callable  The callable
+     * Create a future and complete it asynchronously using our own executor service
      * @param <T>       The return type of the callable
+     * @param callable  The callable
      * @return The future which will be completed
      */
-    public static <T> CompletableFuture<T> asyncFuture(Plugin plugin, Callable<T> callable) {
+    public static <T> CompletableFuture<T> asyncFuture(Callable<T> callable) {
         CompletableFuture<T> future = new CompletableFuture<>();
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        executorService.submit(() -> {
             try {
                 future.complete(callable.call());
             } catch (Exception e) {
