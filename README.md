@@ -33,7 +33,7 @@ Take a look at the lists below at which features are implemented and should alre
 - [ ] Region protection/claim management
 - [ ] Single block protection management
 - [ ] Player statuses (AFK, DND, Vanished, etc)
-- [ ] Player authentication
+- [x] Player authentication
 - [ ] Logging (player info and blocks, including querying and rollback)
 
 See the [project](https://github.com/Minebench/Tresor/projects/1) for a better overview.
@@ -63,6 +63,10 @@ For convenience implementations of providers for the following popular
 - [ ] MiniMessage (Component Parsing)
 - [ ] LogBlock (Logging, UUID)
 - [ ] CoreProtect (Logging, UUID)
+- [x] AuthMe (Authentication)
+- [x] MCAuthenticator (Authentication)
+- [x] OpeNLogin (Authentication)
+- [x] nLogin (Authentication)
 
 Want support for a specific plugin? Open an issue to request it or even better:
  Write a provider implementation yourself and open a pull request! :)

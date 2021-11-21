@@ -20,6 +20,7 @@ package de.minebench.tresor;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import de.minebench.tresor.services.authentication.Authentication;
 import de.minebench.tresor.services.economy.ModernEconomy;
 import de.themoep.hook.bukkit.HookManager;
 import net.milkbowl.vault.economy.Economy;
@@ -56,6 +57,7 @@ public class Tresor extends JavaPlugin {
     }
     
     private void loadProviders() {
+        new ProviderManager(Authentication.class);
         new ProviderManager(Economy.class);
         new ProviderManager(ModernEconomy.class);
     }

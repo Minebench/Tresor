@@ -109,7 +109,7 @@ public class Craftconomy3ModernEconomy extends Provider<ModernEconomy, BukkitLoa
 
     @Override
     public boolean isEnabled() {
-        return hooked != null ? hooked.isEnabled() : Bukkit.getServer().getPluginManager().isPluginEnabled("CraftConomy");
+        return getHooked() != null ? hooked.isEnabled() : Bukkit.getServer().getPluginManager().isPluginEnabled("CraftConomy");
     }
 
     @Override

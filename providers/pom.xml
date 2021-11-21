@@ -14,6 +14,13 @@
     <packaging>pom</packaging>
 
     <modules>
+        <!-- authentication -->
+        <module>authme</module>
+        <module>mcauthenticator</module>
+        <module>nlogin</module>
+        <module>openlogin</module>
+
+        <!-- economy -->
         <module>craftconomy3</module>
     </modules>
 
