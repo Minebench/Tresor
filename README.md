@@ -1,4 +1,7 @@
 # Tresor
+
+![](https://img.shields.io/github/license/minebench/tresor) ![](https://buttons.phoenix616.dev/TresorWorkTime.svg) [![](https://img.shields.io/github/milestones/progress-percent/minebench/tresor/1?label=progress)](https://github.com/Minebench/Tresor/milestone/1) [![](https://img.shields.io/github/issues-raw/minebench/tresor)](https://github.com/Minebench/Tresor/issues)
+
 A Vault compatible abstraction library for Bukkit plugins.
 
 Currently a work in progress. If you want to help out please [contact me](https://phoenix616.dev/discord)!
