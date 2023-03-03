@@ -84,6 +84,15 @@ public class WrappedServicesManager implements TresorServicesManager {
     }
 
     @Override
+    public <T> T load(JavaPlugin plugin, Class<T> service) {
+        RegisteredServiceProvider<T> provider = getRegistration(plugin, service);
+        if (provider != null) {
+            return provider.getProvider();
+        }
+        return parent.load(service);
+    }
+
+    @Override
     public <T> RegisteredServiceProvider<T> getRegistration(Class<T> service) {
         JavaPlugin plugin = getCallingPlugin();
         return plugin != null ? getRegistration(plugin, service) : parent.getRegistration(service);

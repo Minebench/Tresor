@@ -40,12 +40,11 @@ public class ServiceHook<S> {
         this.plugin = plugin;
         this.serviceClass = serviceClass;
         // Use the bukkit service manager to hook into tresor as our own might not exist yet!
-        RegisteredServiceProvider<TresorServicesManager> rsp = plugin.getServer().getServicesManager().getRegistration(TresorServicesManager.class);
-        if (rsp == null) {
+        serviceManager = plugin.getServer().getServicesManager().load(TresorServicesManager.class);
+        if (serviceManager == null) {
             // This should not be possible
             throw new IllegalStateException("TresorServicesManager provider wasn't found?");
         }
-        serviceManager = rsp.getProvider();
         plugin.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onServiceRegister(ServiceRegisterEvent event) {
@@ -65,10 +64,10 @@ public class ServiceHook<S> {
     }
 
     private void updateServiceProvider() {
-        RegisteredServiceProvider<S> rsp = serviceManager.getRegistration(serviceClass);
+        S currentProvider = serviceManager.load(plugin, serviceClass);
 
-        if (rsp != null) {
-            serviceProvider = rsp.getProvider();
+        if (currentProvider != null) {
+            serviceProvider = currentProvider;
             plugin.getLogger().info("Using " + (serviceProvider instanceof TresorServiceProvider
                     ? ((TresorServiceProvider) serviceProvider).getName() : rsp.getPlugin().getName())
                     + " as the " + serviceClass.getSimpleName() + " provider now.");

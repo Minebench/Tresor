@@ -25,7 +25,29 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Collection;
 
 public interface TresorServicesManager extends ServicesManager {
-    
+    /**
+     * Queries for a provider that corresponds to the plugin calling the method or
+     * a default one if it wasn't mapped. This may return null if no provider has
+     * been registered for a service. The highest priority provider is returned.
+     * @param <T> The service interface
+     * @param service The service interface
+     * @return provider or null
+     * @deprecated Use {@link #load(JavaPlugin, Class)}
+     */
+    @Deprecated
+    @Override
+    <T> T load(Class<T> service);
+
+    /**
+     * Queries for a provider that corresponds to the plugin calling the method or
+     * a default one if it wasn't mapped. This may return null if no provider has
+     * been registered for a service. The highest priority provider is returned.
+     * @param service   The service interface
+     * @param <T>       The service interface
+     * @return Provider registration or null if non was found or the plugin was configured to not have one
+     */
+    <T> T load(JavaPlugin plugin, Class<T> service);
+
     /**
      * Queries for a provider registration that corresponds to the plugin calling the method or
      * a default one if it wasn't mapped. This may return if no provider has been registered for a service.

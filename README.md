@@ -116,10 +116,7 @@ public class MyPlugin extends JavaPlugin implements Listener {
 
     private void updateEconomyProvider() {
         // get the service provider registration for this plugin
-        RegisteredServiceProvider<ModernEconomy> rsp = tresorApi.getServicesManager().getRegistration(this, ModernEconomy.class);
-        if (rsp != null) {
-            economy = rsp.getProvider();
-        }
+        economy = tresorApi.getServicesManager().load(this, ModernEconomy.class);
     }
 
     @EventHandler
