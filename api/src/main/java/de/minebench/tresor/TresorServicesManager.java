@@ -18,7 +18,6 @@ package de.minebench.tresor;
  * along with Tresor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,7 +32,9 @@ public interface TresorServicesManager extends ServicesManager {
      * @param service   The service interface
      * @param <T>       The service interface
      * @return Provider registration or null if non was found or the plugin was configured to not have one
+     * @deprecated Use {@link #getRegistration(JavaPlugin, Class)}
      */
+    @Deprecated
     @Override
     <T> RegisteredServiceProvider<T> getRegistration(Class<T> service);
     
@@ -54,7 +55,9 @@ public interface TresorServicesManager extends ServicesManager {
      * @param service   The service interface
      * @param <T>       The service interface
      * @return List of registrations
+     * @deprecated Use {@link #getRegistrations(JavaPlugin, Class)}
      */
+    @Deprecated
     @Override
     <T> Collection<RegisteredServiceProvider<T>> getRegistrations(Class<T> service);
     
@@ -73,7 +76,9 @@ public interface TresorServicesManager extends ServicesManager {
      * Get a list of known services. A service is known if it has registered
      * providers for it and if it wasn't ignored for the calling plugin.
      * @return List of known services
+     * @deprecated Use {@link #getKnownServices(JavaPlugin)}
      */
+    @Deprecated
     @Override
     Collection<Class<?>> getKnownServices();
     
@@ -92,7 +97,9 @@ public interface TresorServicesManager extends ServicesManager {
      * @param service   The service interface to check
      * @param <T>       The service interface
      * @return whether there has been a registered provider
+     * @deprecated Use {@link #isProvidedFor(JavaPlugin, Class)}
      */
+    @Deprecated
     @Override
     <T> boolean isProvidedFor(Class<T> service);
     
@@ -106,11 +113,5 @@ public interface TresorServicesManager extends ServicesManager {
      * @return whether there has been a registered provider
      */
     <T> boolean isProvidedFor(JavaPlugin plugin, Class<T> service);
-    
-    public static TresorServicesManager get() {
-        if (Bukkit.getServer().getServicesManager() instanceof TresorServicesManager) {
-            return (TresorServicesManager) Bukkit.getServer().getServicesManager();
-        }
-        return null;
-    }
+
 }

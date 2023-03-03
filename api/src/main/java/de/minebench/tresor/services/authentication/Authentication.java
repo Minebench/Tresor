@@ -1,5 +1,6 @@
 package de.minebench.tresor.services.authentication;
 
+import de.minebench.tresor.services.TresorServiceProvider;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -30,21 +31,7 @@ import java.util.function.BiConsumer;
  * The authentication service API for checking if a player was authenticated in another plugin.
  * Returns {@link java.util.concurrent.CompletableFuture}s to allow async usage if supported by the providing plugin.
  */
-public interface Authentication {
-
-    /**
-     * Checks if economy method is enabled.
-     *
-     * @return Success or Failure
-     */
-    boolean isEnabled();
-
-    /**
-     * Gets name of the authentication method
-     *
-     * @return Name of the authentication Method
-     */
-    String getName();
+public interface Authentication extends TresorServiceProvider {
 
     /**
      * Returns true if the given implementation supports a given feature.

@@ -1,5 +1,6 @@
 package de.minebench.tresor.services.economy;
 
+import de.minebench.tresor.services.TresorServiceProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -29,21 +30,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * The main economy service API using industry standard {@link BigDecimal} for values and {@link java.util.concurrent.CompletableFuture}s to allow async usage if possible.
  */
-public interface ModernEconomy {
-
-    /**
-     * Checks if economy method is enabled.
-     *
-     * @return Success or Failure
-     */
-    boolean isEnabled();
-
-    /**
-     * Gets name of economy method
-     *
-     * @return Name of Economy Method
-     */
-    String getName();
+public interface ModernEconomy extends TresorServiceProvider {
 
     /**
      * Returns true if the given implementation supports a given feature.

@@ -24,12 +24,13 @@ import de.minebench.tresor.services.authentication.Authentication;
 import de.minebench.tresor.services.economy.ModernEconomy;
 import de.themoep.hook.bukkit.HookManager;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
-public class Tresor extends JavaPlugin {
+public class Tresor extends JavaPlugin implements TresorAPI {
     
     private WrappedServicesManager servicesManager;
 
@@ -37,6 +38,7 @@ public class Tresor extends JavaPlugin {
     
     @Override
     public void onEnable() {
+        getServer().getServicesManager().register(TresorAPI.class, this, this, ServicePriority.Normal);
         saveDefaultConfig();
         servicesManager = new WrappedServicesManager(this, getServer().getServicesManager());
         try {
@@ -44,6 +46,7 @@ public class Tresor extends JavaPlugin {
         } catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
             getLogger().log(Level.SEVERE, "Error while trying to inject WrappedServicesManager! Service mapping will not work!" + e.getMessage());
         }
+        getServer().getServicesManager().register(TresorServicesManager.class, servicesManager, this, ServicePriority.Normal);
         
         loadProviders();
         
@@ -61,11 +64,8 @@ public class Tresor extends JavaPlugin {
         new ProviderManager(Economy.class);
         new ProviderManager(ModernEconomy.class);
     }
-    
-    /**
-     * Get the TresorServicesManager
-     * @return The TresorServicesManager instance
-     */
+
+    @Override
     public TresorServicesManager getServicesManager() {
         return servicesManager;
     }

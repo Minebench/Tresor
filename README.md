@@ -11,7 +11,8 @@ Take a look at the lists below at which features are implemented and should alre
 ## Features
 - [x] UUID compatible
 - [x] Run multiple service provider (economy/permission/etc.)
-      and set different providers for different plugins
+      and **set different providers for different plugins!**
+- [x] ServiceHook utility to manage accessing service providers properly
 - [x] Fallback to other service providers
 - [ ] Check returns of multiple providers
 - [ ] (Maybe: BungeeCord support)
@@ -26,6 +27,7 @@ Take a look at the lists below at which features are implemented and should alre
 - [ ] UUID/Username/Profile storage and lookup
 - [ ] Local Namechange storage and lookup
 - [ ] Item data storage
+- [ ] Player vaults/virtual backpacks
 - [ ] Friends 
 - [ ] Parties/clans/guilds
 - [ ] Component parsing
@@ -51,6 +53,7 @@ For convenience implementations of providers for the following popular
 - [ ] EssentialsX (Economy, Modern Economy, Chat, UUID, Namechanges, Player Statuses, Regions)
 - [x] CraftConomy3 (Economy, Modern Economy)
 - [ ] ChestShop (Item data storage, Protection)
+- [ ] Bolt (Protection)
 - [ ] LWCX (Protection)
 - [ ] Lockette (Protection)
 - [ ] WorldGuard (Regions, Protection)
@@ -70,6 +73,70 @@ For convenience implementations of providers for the following popular
 
 Want support for a specific plugin? Open an issue to request it or even better:
  Write a provider implementation yourself and open a pull request! :)
+
+## How to hook into Tresor
+
+Tresor uses the ServiceManager which is built into Bukkit/Spigot/Paper.
+
+E.g. if you want to hook into the ModernEconomy service you can use the ServiceHook utility like this in your onEnable:
+
+```java
+public class MyPlugin extends JavaPlugin implements Listener {
+    private ServiceHook<ModernEconomy> economyHook;
+
+    public void onEnable() {
+        // create the hook
+        economyHook = new ServiceHook<>(this, ModernEconomy.class);
+    }
+
+    public ModernEconomy getEconomy() {
+        // get the provider from the hook, might return null if none exists!
+        return economyHook.getProvider();
+    }
+}
+```
+
+This utility can be used for all services, not just Tresor ones!
+
+### Manually
+
+If you want to do the hooking manually then make sure to get the provider onEnable and then listen on the
+ServiceRegisterEvent and ServiceUnregisterEvent! (This can be used for all services!)
+
+```java
+public class MyPlugin extends JavaPlugin implements Listener {
+    private TresorAPI tresorApi = null;
+    private ModernEconomy economy = null;
+
+    private void onEnable() {
+        updateEconomyProvider();
+        // get the TresorAPI to make sure we use our extended services manager
+        tresorApi = (TresorAPI) getServer().getPlugin("Tresor");
+    }
+
+    private void updateEconomyProvider() {
+        // get the service provider registration for this plugin
+        RegisteredServiceProvider<ModernEconomy> rsp = tresorApi.getServicesManager().getRegistration(this, ModernEconomy.class);
+        if (rsp != null) {
+            economy = rsp.getProvider();
+        }
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceRegisterEvent event) {
+        if (event.getProvider().getProvider() instanceof ModernEconomy) {
+            updateEconomyProvider();
+        }
+    }
+
+    @EventHandler
+    public void onServiceUnregister(ServiceUnregisterEvent event) {
+        if (event.getProvider().getProvider() instanceof ModernEconomy) {
+            updateEconomyProvider();
+        }
+    }
+}
+```
 
 ## License
 Tresor is distributed under the terms of the [GPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
