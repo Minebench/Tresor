@@ -20,23 +20,18 @@ package de.minebench.tresor;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import lombok.experimental.Delegate;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 
 public class WrappedServicesManager implements TresorServicesManager {
     private final Tresor tresor;
-    private interface Excludes {
-        <T> RegisteredServiceProvider<T> getRegistration(Class<T> service);
-        <T> Collection<RegisteredServiceProvider<T>> getRegistrations(Class<T> service);
-        Collection<Class<?>> getKnownServices();
-        <T> boolean isProvidedFor(Class<T> var1);
-    }
-    @Delegate(excludes = Excludes.class, types = {ServicesManager.class})
     private final ServicesManager parent;
     
     public WrappedServicesManager(Tresor plugin, ServicesManager parent) {
@@ -62,13 +57,43 @@ public class WrappedServicesManager implements TresorServicesManager {
         }
         return null;
     }
-    
+
+    @Override
+    public <T> void register(Class<T> service, T provider, Plugin plugin, ServicePriority priority) {
+        parent.register(service, provider, plugin, priority);
+    }
+
+    @Override
+    public void unregisterAll(Plugin plugin) {
+        parent.unregisterAll(plugin);
+    }
+
+    @Override
+    public void unregister(Class<?> service, Object provider) {
+        parent.unregister(service, provider);
+    }
+
+    @Override
+    public void unregister(Object provider) {
+        parent.unregister(provider);
+    }
+
+    @Override
+    public <T> T load(Class<T> service) {
+        return parent.load(service);
+    }
+
     @Override
     public <T> RegisteredServiceProvider<T> getRegistration(Class<T> service) {
         JavaPlugin plugin = getCallingPlugin();
         return plugin != null ? getRegistration(plugin, service) : parent.getRegistration(service);
     }
-    
+
+    @Override
+    public List<RegisteredServiceProvider<?>> getRegistrations(Plugin plugin) {
+        return parent.getRegistrations(plugin);
+    }
+
     @Override
     public <T> RegisteredServiceProvider<T> getRegistration(JavaPlugin plugin, Class<T> service) {
         String providerName = tresor.getProviderName(service, plugin);
