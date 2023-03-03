@@ -112,6 +112,8 @@ public class MyPlugin extends JavaPlugin implements Listener {
         updateEconomyProvider();
         // get the TresorAPI to make sure we use our extended services manager
         tresorApi = (TresorAPI) getServer().getPlugin("Tresor");
+        // register the service events listener
+        plugin.getServer().getPluginManager().registerEvents(this, this);
     }
 
     private void updateEconomyProvider() {
