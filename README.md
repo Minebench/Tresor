@@ -68,6 +68,7 @@ For convenience implementations of providers for the following popular
 - [ ] CoreProtect (Logging, UUID)
 - [x] AuthMe (Authentication)
 - [x] MCAuthenticator (Authentication)
+- [x] LibreLogin, *formerly LibrePremium* (Authentication)
 - [x] OpeNLogin (Authentication)
 - [x] nLogin (Authentication)
 

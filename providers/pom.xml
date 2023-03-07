@@ -20,6 +20,7 @@
         <module>mcauthenticator</module>
         <module>nlogin</module>
         <module>openlogin</module>
+        <module>librelogin</module>
 
         <!-- economy -->
         <module>craftconomy3</module>
