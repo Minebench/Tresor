@@ -64,10 +64,10 @@ public class ServiceHook<S> {
     }
 
     private void updateServiceProvider() {
-        S currentProvider = serviceManager.load(plugin, serviceClass);
+        RegisteredServiceProvider<S> rsp = serviceManager.getRegistration(plugin, serviceClass);
 
-        if (currentProvider != null) {
-            serviceProvider = currentProvider;
+        if (rsp != null) {
+            serviceProvider = rsp.getProvider();
             plugin.getLogger().info("Using " + (serviceProvider instanceof TresorServiceProvider
                     ? ((TresorServiceProvider) serviceProvider).getName() : rsp.getPlugin().getName())
                     + " as the " + serviceClass.getSimpleName() + " provider now.");
