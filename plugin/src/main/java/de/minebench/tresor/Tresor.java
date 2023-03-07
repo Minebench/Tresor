@@ -23,7 +23,9 @@ import com.google.common.collect.MultimapBuilder;
 import de.minebench.tresor.services.authentication.Authentication;
 import de.minebench.tresor.services.economy.ModernEconomy;
 import de.themoep.hook.bukkit.HookManager;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -63,6 +65,8 @@ public class Tresor extends JavaPlugin implements TresorAPI {
         new ProviderManager(Authentication.class);
         new ProviderManager(Economy.class);
         new ProviderManager(ModernEconomy.class);
+        new ProviderManager(Permission.class);
+        new ProviderManager(Chat.class);
     }
 
     @Override
