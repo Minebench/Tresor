@@ -26,6 +26,8 @@ import de.themoep.hook.bukkit.HookManager;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,8 +53,9 @@ public class Tresor extends JavaPlugin implements TresorAPI {
         getServer().getServicesManager().register(TresorServicesManager.class, servicesManager, this, ServicePriority.Normal);
         
         loadProviders();
-        
-        new org.bstats.MetricsLite(this);
+
+        Metrics metrics = new Metrics(this, 17883);
+        metrics.addCustomChart(new SimplePie("usesTresorServicesManager", () -> String.valueOf(getServer().getServicesManager() instanceof TresorServicesManager)));
     }
     
     private void injectServicesManager() throws IllegalAccessException, NoSuchFieldException, SecurityException {
