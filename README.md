@@ -4,9 +4,7 @@
 
 A Vault compatible abstraction library for Bukkit plugins.
 
-Currently a work in progress. If you want to help out please [contact me](https://phoenix616.dev/discord)!
-
-Take a look at the lists below at which features are implemented and should already work.
+It is currently a work in progress. If you want to help out please [contact me](https://phoenix616.dev/discord)!
 
 ## Features
 - [x] UUID compatible
@@ -17,126 +15,13 @@ Take a look at the lists below at which features are implemented and should alre
 - [ ] Check returns of multiple providers
 - [ ] (Maybe: BungeeCord support)
 
-## Included Abstractions
-- [x] Economy
-- [x] Modern Economy using BigDecimal and CompletableFutures
-- [x] Permissions
-- [ ] Modern, async Permissions provider using CompletableFutures
-- [x] Chat
-- [ ] Modern, async Chat provider using CompletableFutures
-- [ ] UUID/Username/Profile storage and lookup
-- [ ] Local Namechange storage and lookup
-- [ ] Item data storage
-- [ ] Player vaults/virtual backpacks
-- [ ] Friends 
-- [ ] Parties/clans/guilds
-- [ ] Component parsing
-- [ ] Placeholders
-- [ ] Region protection/claim management
-- [ ] Single block protection management
-- [ ] Player statuses (AFK, DND, Vanished, etc)
-- [x] Player authentication
-- [ ] Logging (player info and blocks, including querying and rollback)
-
-See the [project](https://github.com/Minebench/Tresor/projects/1) for a better overview.
-
-## Supported plugins
-Any plugin can implement and register a provider the same way as it was
- possible with Vault (TODO: instructions on wiki).
-
-For convenience implementations of providers for the following popular
- plugins are provided directly in Tresor:
-
-- [ ] LuckPerms (Permissions, Modern Permissions, Chat, UUID)
-- [ ] BungeePerms (Permissions, Modern Permissions, Chat, UUID)
-- [ ] GroupManager (Permissions, Modern Permissions, Chat, UUID)
-- [ ] EssentialsX (Economy, Modern Economy, Chat, UUID, Namechanges, Player Statuses, Regions)
-- [x] CraftConomy3 (Economy, Modern Economy)
-- [ ] ChestShop (Item data storage, Protection)
-- [ ] Bolt (Protection)
-- [ ] LWCX (Protection)
-- [ ] Lockette (Protection)
-- [ ] WorldGuard (Regions, Protection)
-- [ ] PlotSquared (Regions)
-- [ ] RedProtect (Regions)
-- [ ] Factions (Regions, Clans)
-- [ ] Towny (Regions, Clans)
-- [ ] PlaceholderAPI (Placeholders)
-- [ ] MineDown (Component Parsing)
-- [ ] MiniMessage (Component Parsing)
-- [ ] LogBlock (Logging, UUID)
-- [ ] CoreProtect (Logging, UUID)
-- [x] AuthMe (Authentication)
-- [x] MCAuthenticator (Authentication)
-- [x] LibreLogin, *formerly LibrePremium* (Authentication)
-- [x] OpeNLogin (Authentication)
-- [x] nLogin (Authentication)
-
-Want support for a specific plugin? Open an issue to request it or even better:
- Write a provider implementation yourself and open a pull request! :)
-
-## How to hook into Tresor
-
-Tresor uses the ServiceManager which is built into Bukkit/Spigot/Paper.
-
-E.g. if you want to hook into the ModernEconomy service you can use the ServiceHook utility like this in your onEnable:
-
-```java
-public class MyPlugin extends JavaPlugin implements Listener {
-    private ServiceHook<ModernEconomy> economyHook;
-
-    public void onEnable() {
-        // create the hook
-        economyHook = new ServiceHook<>(this, ModernEconomy.class);
-    }
-
-    public ModernEconomy getEconomy() {
-        // get the provider from the hook, might return null if none exists!
-        return economyHook.getProvider();
-    }
-}
-```
-
-This utility can be used for all services, not just Tresor ones!
-
-### Manually
-
-If you want to do the hooking manually then make sure to get the provider onEnable and then listen on the
-ServiceRegisterEvent and ServiceUnregisterEvent! (This can be used for all services!)
-
-```java
-public class MyPlugin extends JavaPlugin implements Listener {
-    private TresorAPI tresorApi = null;
-    private ModernEconomy economy = null;
-
-    private void onEnable() {
-        updateEconomyProvider();
-        // get the TresorAPI to make sure we use our extended services manager
-        tresorApi = (TresorAPI) getServer().getPlugin("Tresor");
-        // register the service events listener
-        plugin.getServer().getPluginManager().registerEvents(this, this);
-    }
-
-    private void updateEconomyProvider() {
-        // get the service provider registration for this plugin
-        economy = tresorApi.getServicesManager().load(this, ModernEconomy.class);
-    }
-
-    @EventHandler
-    public void onServiceRegister(ServiceRegisterEvent event) {
-        if (event.getProvider().getProvider() instanceof ModernEconomy) {
-            updateEconomyProvider();
-        }
-    }
-
-    @EventHandler
-    public void onServiceUnregister(ServiceUnregisterEvent event) {
-        if (event.getProvider().getProvider() instanceof ModernEconomy) {
-            updateEconomyProvider();
-        }
-    }
-}
-```
+## Further Information
+- [Why Tresor?](https://github.com/Minebench/Tresor/wiki)
+- [Offered Service Abstractions](https://github.com/Minebench/Tresor/wiki/Offered-Services)
+- [Supported Plugins](https://github.com/Minebench/Tresor/wiki/Supported-Plugins)
+- [How to correctly hook into Tresor](https://github.com/Minebench/Tresor/wiki/Hook-into-Tresor)
+- [Planning Project](https://github.com/Minebench/Tresor/projects/1)
+- [Development builds](https://ci.minebench.de/job/Tresor)
 
 ## License
 Tresor is distributed under the terms of the [GPL v3.0](https://github.com/Minebench/Tresor/blob/master/LICENSE)
