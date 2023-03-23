@@ -22,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class TresorUtils {
 
@@ -59,5 +60,18 @@ public class TresorUtils {
             future.completeExceptionally(e);
         }
         return future;
+    }
+
+    /**
+     * Stop the ExecutorService. Waits up to 15 seconds for stuff to finish executing.
+     * @return Whether the ExecutorService was shutdown properly.
+     */
+    static boolean shutdownExecutor() {
+        try {
+            return executorService.awaitTermination(15, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

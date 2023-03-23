@@ -57,6 +57,11 @@ public class Tresor extends JavaPlugin implements TresorAPI {
         Metrics metrics = new Metrics(this, 17883);
         metrics.addCustomChart(new SimplePie("usesTresorServicesManager", () -> String.valueOf(getServer().getServicesManager() instanceof TresorServicesManager)));
     }
+
+    @Override
+    public void onDisable() {
+        TresorUtils.shutdownExecutor();
+    }
     
     private void injectServicesManager() throws IllegalAccessException, NoSuchFieldException, SecurityException {
         Field field = getServer().getClass().getDeclaredField("servicesManager");
