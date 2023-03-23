@@ -1,12 +1,13 @@
-name: ${plugin.name}
-version: '${plugin.version} ${build.number}'
+name: Tresor
+version: '${project.version} ${buildDescription}'
 api-version: '1.13'
 main: de.minebench.tresor.Tresor
 load: STARTUP
 provides: [Vault]
 authors: [Phoenix616]
-website: '${project.url}'
-description: '${project.description}'
+website: '${parent.url}'
+description: '${parent.description}'
+folia-supported: true
 commands:
   tresor:
     description: Displays information about Tresor
