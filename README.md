@@ -13,6 +13,7 @@ It is currently a work in progress. If you want to help out please [contact me](
 - [x] ServiceHook utility to manage accessing service providers properly
 - [x] Fallback to other service providers
 - [ ] Check returns of multiple providers
+- [ ] Automatically convert between different plugins
 - [ ] (Maybe: BungeeCord support)
 
 ## Further Information
