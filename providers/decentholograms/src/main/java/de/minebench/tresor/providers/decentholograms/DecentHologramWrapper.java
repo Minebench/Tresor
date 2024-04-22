@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 public class DecentHologramWrapper implements Hologram {
 
     private final eu.decentsoftware.holograms.api.holograms.Hologram hologram;
+    private double lineHeight = 0.25;
 
     public DecentHologramWrapper(eu.decentsoftware.holograms.api.holograms.Hologram hologram) {
         this.hologram = hologram;
     }
-
 
     @Override
     public String getHologramId() {
@@ -45,6 +45,24 @@ public class DecentHologramWrapper implements Hologram {
     }
 
     @Override
+    public double getLineHeight() {
+        return lineHeight;
+    }
+
+    @Override
+    public void setLineHeight(double height) {
+        lineHeight = height;
+
+        // Update existing holograms
+        HologramPage page = hologram.getPage(0);
+
+        for (int index = 0; index < page.getLines().size(); index++) {
+            HologramLine line = page.getLine(index);
+            line.setLocation(getLineLocation(index));
+        }
+    }
+
+    @Override
     public Location getLocation() {
         return hologram.getLocation();
     }
@@ -56,17 +74,34 @@ public class DecentHologramWrapper implements Hologram {
 
     @Override
     public void showTo(Player player) {
+        if (!supports(Feature.PER_PLAYER)) {
+            throw new UnsupportedOperationException("This hologram does not support per-player visibility");
+        }
+
         hologram.show(player, 0);
     }
 
     @Override
     public void hideFrom(Player player) {
+        if (!supports(Feature.PER_PLAYER)) {
+            throw new UnsupportedOperationException("This hologram does not support per-player visibility");
+        }
+
         hologram.hide(player);
     }
 
     @Override
     public void destroy() {
         hologram.delete();
+    }
+
+    @Override
+    public boolean supports(Feature feature) {
+        if (feature == Feature.PER_PLAYER) {
+            return true;
+        }
+
+        return false;
     }
 
     private HologramLine createLine(String text) {
@@ -76,6 +111,6 @@ public class DecentHologramWrapper implements Hologram {
     }
 
     private Location getLineLocation(int index) {
-        return hologram.getLocation().clone().subtract(0, LINE_HEIGHT * index, 0);
+        return hologram.getLocation().clone().subtract(0, lineHeight * index, 0);
     }
 }

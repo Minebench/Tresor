@@ -2,18 +2,18 @@ package de.minebench.tresor.providers.decentholograms;
 
 import de.minebench.tresor.Provider;
 import de.minebench.tresor.services.hologram.Hologram;
-import de.minebench.tresor.services.hologram.HologramProvider;
+import de.minebench.tresor.services.hologram.Holograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.plugin.DecentHologramsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-public class DecentHologramsProvider extends Provider<HologramProvider, DecentHologramsPlugin> implements HologramProvider {
+public class DecentHologramsHolograms extends Provider<Holograms, DecentHologramsPlugin> implements Holograms {
 
     private DecentHologramsPlugin hooked;
 
-    public DecentHologramsProvider() {
-        super(HologramProvider.class);
+    public DecentHologramsHolograms() {
+        super(Holograms.class);
     }
 
     @Override
@@ -39,6 +39,11 @@ public class DecentHologramsProvider extends Provider<HologramProvider, DecentHo
         }
 
         return hooked;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return getHooked() != null && getHooked().isEnabled();
     }
 
     @Override
