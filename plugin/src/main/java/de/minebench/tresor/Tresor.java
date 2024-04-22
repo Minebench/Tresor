@@ -22,6 +22,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import de.minebench.tresor.services.authentication.Authentication;
 import de.minebench.tresor.services.economy.ModernEconomy;
+import de.minebench.tresor.services.hologram.Holograms;
 import de.themoep.hook.bukkit.HookManager;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -72,6 +73,7 @@ public class Tresor extends JavaPlugin implements TresorAPI {
     private void loadProviders() {
         new ProviderManager(Authentication.class);
         new ProviderManager(Economy.class);
+        new ProviderManager(Holograms.class);
         new ProviderManager(ModernEconomy.class);
         new ProviderManager(Permission.class);
         new ProviderManager(Chat.class);
