@@ -7,4 +7,10 @@ public interface Holograms extends TresorServiceProvider {
 
     Hologram createHologram(String hologramId, Location location);
     Hologram getHologram(String hologramId);
+
+    boolean supports(Feature feature);
+
+    enum Feature {
+        PER_PLAYER,
+    }
 }

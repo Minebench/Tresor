@@ -18,7 +18,7 @@ public class DecentHologramsHolograms extends Provider<Holograms, DecentHologram
 
     @Override
     public Hologram createHologram(String hologramId, Location location) {
-        return new DecentHologramWrapper(DHAPI.createHologram(hologramId, location));
+        return new DecentHologramWrapper(this, DHAPI.createHologram(hologramId, location));
     }
 
     @Override
@@ -29,7 +29,16 @@ public class DecentHologramsHolograms extends Provider<Holograms, DecentHologram
             return null;
         }
 
-        return new DecentHologramWrapper(hologram);
+        return new DecentHologramWrapper(this, hologram);
+    }
+
+    @Override
+    public boolean supports(Feature feature) {
+        if (feature == Feature.PER_PLAYER) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

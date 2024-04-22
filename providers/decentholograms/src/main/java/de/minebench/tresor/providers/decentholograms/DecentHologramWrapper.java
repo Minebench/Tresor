@@ -1,6 +1,8 @@
 package de.minebench.tresor.providers.decentholograms;
 
 import de.minebench.tresor.services.hologram.Hologram;
+import de.minebench.tresor.services.hologram.Holograms;
+import de.minebench.tresor.services.hologram.Holograms.Feature;
 import eu.decentsoftware.holograms.api.holograms.HologramLine;
 import eu.decentsoftware.holograms.api.holograms.HologramPage;
 import org.bukkit.Location;
@@ -9,10 +11,18 @@ import org.bukkit.entity.Player;
 public class DecentHologramWrapper implements Hologram {
 
     private final eu.decentsoftware.holograms.api.holograms.Hologram hologram;
+    private final Holograms provider;
+
     private double lineHeight = 0.25;
 
-    public DecentHologramWrapper(eu.decentsoftware.holograms.api.holograms.Hologram hologram) {
+    public DecentHologramWrapper(Holograms provider, eu.decentsoftware.holograms.api.holograms.Hologram hologram) {
+        this.provider = provider;
         this.hologram = hologram;
+    }
+
+    @Override
+    public Holograms getProvider() {
+        return provider;
     }
 
     @Override
@@ -93,15 +103,6 @@ public class DecentHologramWrapper implements Hologram {
     @Override
     public void destroy() {
         hologram.delete();
-    }
-
-    @Override
-    public boolean supports(Feature feature) {
-        if (feature == Feature.PER_PLAYER) {
-            return true;
-        }
-
-        return false;
     }
 
     private HologramLine createLine(String text) {
