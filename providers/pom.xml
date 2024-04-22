@@ -27,6 +27,9 @@
 
         <!-- holograms -->
         <module>decentholograms</module>
+
+        <!-- npcs -->
+        <module>citizens</module>
     </modules>
 
     <dependencies>
