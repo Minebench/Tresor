@@ -24,6 +24,9 @@
 
         <!-- economy -->
         <module>craftconomy3</module>
+
+        <!-- holograms -->
+        <module>decentholograms</module>
     </modules>
 
     <dependencies>
