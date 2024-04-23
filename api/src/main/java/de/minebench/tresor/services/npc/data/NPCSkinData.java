@@ -1,4 +1,4 @@
-package de.minebench.tresor.services.npc.skin;
+package de.minebench.tresor.services.npc.data;
 
 public class NPCSkinData {
 

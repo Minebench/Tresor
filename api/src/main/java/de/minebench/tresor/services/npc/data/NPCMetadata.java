@@ -1,6 +1,4 @@
-package de.minebench.tresor.services.npc;
-
-import de.minebench.tresor.services.npc.skin.NPCSkinData;
+package de.minebench.tresor.services.npc.data;
 
 public class NPCMetadata {
 

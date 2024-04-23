@@ -1,15 +1,20 @@
 package de.minebench.tresor.providers.citizens;
 
 import de.minebench.tresor.services.npc.NPC;
-import de.minebench.tresor.services.npc.NPCMetadata;
-import de.minebench.tresor.services.npc.skin.NPCSkinData;
+import de.minebench.tresor.services.npc.data.Interaction;
+import de.minebench.tresor.services.npc.data.NPCMetadata;
+import de.minebench.tresor.services.npc.data.NPCSkinData;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class WrappedNPC implements NPC {
 
+    private final List<Consumer<Interaction>> interactActions = new ArrayList<>();
     private final net.citizensnpcs.api.npc.NPC npc;
     private final boolean persistent;
 
@@ -66,7 +71,18 @@ public class WrappedNPC implements NPC {
     }
 
     @Override
-    public void destroy() {
+    public void onInteract(Consumer<Interaction> action) {
+        interactActions.add(action);
+    }
+
+    @Override
+    public void remove() {
         npc.destroy();
+    }
+
+    public void handleInteraction(Interaction interaction) { // I don't think this should be exposed
+        for (Consumer<Interaction> action : interactActions) {
+            action.accept(interaction);
+        }
     }
 }

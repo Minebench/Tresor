@@ -1,6 +1,7 @@
 package de.minebench.tresor.providers.citizens;
 
 import de.minebench.tresor.Provider;
+import de.minebench.tresor.providers.citizens.listener.CitizensNPCListener;
 import de.minebench.tresor.services.npc.NPC;
 import de.minebench.tresor.services.npc.NPCs;
 import java.util.UUID;
@@ -20,6 +21,18 @@ public class CitizensNPCs extends Provider<NPCs, CitizensPlugin> implements NPCs
 
     public CitizensNPCs() {
         super(NPCs.class);
+    }
+
+    @Override
+    public void register() {
+        super.register();
+        Bukkit.getPluginManager().registerEvents(new CitizensNPCListener(this), getHooked());
+    }
+
+    @Override
+    public void unregister() {
+        super.unregister();
+        // TODO
     }
 
     @Override
@@ -58,7 +71,7 @@ public class CitizensNPCs extends Provider<NPCs, CitizensPlugin> implements NPCs
         NPC npc = getNPC(uniqueId);
 
         if (npc != null) {
-            npc.destroy();
+            npc.remove();
         }
     }
 
@@ -70,7 +83,7 @@ public class CitizensNPCs extends Provider<NPCs, CitizensPlugin> implements NPCs
     @Override
     public CitizensPlugin getHooked() {
         if(hooked == null) {
-            hooked = (CitizensPlugin) Bukkit.getPluginManager().getPlugin("Citizens");
+            hooked = (CitizensPlugin) Bukkit.getPluginManager().getPlugin(getName());
             ensureRegistries();
         }
 
