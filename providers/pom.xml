@@ -22,6 +22,9 @@
         <module>openlogin</module>
         <module>librelogin</module>
 
+        <!-- placeholder -->
+        <module>placeholderapi</module>
+
         <!-- economy -->
         <module>craftconomy3</module>
 

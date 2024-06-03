@@ -68,6 +68,14 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- placeholder -->
+        <dependency>
+            <groupId>de.minebench.tresor.providers</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- economy -->
         <dependency>
             <groupId>de.minebench.tresor.providers</groupId>
