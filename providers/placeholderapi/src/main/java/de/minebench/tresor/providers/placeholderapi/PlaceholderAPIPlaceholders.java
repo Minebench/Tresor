@@ -1,7 +1,6 @@
 package de.minebench.tresor.providers.placeholderapi;
 
 import de.minebench.tresor.Provider;
-import de.minebench.tresor.services.placeholder.EmptyPlaceholder;
 import de.minebench.tresor.services.placeholder.Placeholder;
 import de.minebench.tresor.services.placeholder.Placeholders;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -21,6 +20,8 @@ public class PlaceholderAPIPlaceholders extends Provider<Placeholders, Placehold
 
     public PlaceholderAPIPlaceholders() {
         super(Placeholders.class);
+
+        new PlaceholderAPIExpansion(this).register();
     }
 
     @Override
@@ -48,12 +49,7 @@ public class PlaceholderAPIPlaceholders extends Provider<Placeholders, Placehold
 
     @Override
     public Placeholder getPlaceholder(final String key) {
-        final Placeholder placeholder = this.placeholders.get(key);
-
-        if (placeholder == null)
-            return new EmptyPlaceholder();
-
-        return placeholder;
+        return this.placeholders.get(key);
     }
 
     @Override
@@ -67,19 +63,11 @@ public class PlaceholderAPIPlaceholders extends Provider<Placeholders, Placehold
     }
 
     @Override
-    public void hook() {
-        if (!isEnabled())
-            return;
-
-        new PlaceholderAPIExpansion(this).register();
-    }
-
-    @Override
     public String request(final OfflinePlayer player, final String params) {
         final Placeholder placeholder = getPlaceholder(params);
 
         if (placeholder == null)
-            return new EmptyPlaceholder().request(player);
+            return "N/A";
 
         return placeholder.request(player);
     }

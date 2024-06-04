@@ -46,11 +46,6 @@ public interface Placeholders extends TresorServiceProvider {
     }
 
     /**
-     * Register placeholders into placeholder plugin
-     */
-    void hook();
-
-    /**
      * Request the value of the placeholder
      * @param player The player to request the value for
      * @param params The parameters for the placeholder
